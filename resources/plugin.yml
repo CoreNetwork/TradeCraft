@@ -1,0 +1,8 @@
+name: TradeCraft
+main: us.corenetwork.tradecraft.TradeCraftPlugin
+version: 1.0.0
+author: matejdro
+commands:
+    tradecraft:
+        description: Main command
+load: STARTUP
