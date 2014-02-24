@@ -42,8 +42,17 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.7.2-R0.3-SNAPSHOT</version>
-      <scope>compile</scope>
+      <version>1.7.2-R0.2</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/bukkit-1.7.2-R0.2.jar</systemPath>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>craftbukkit</artifactId>
+      <version>1.7.2-R0.2</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/craftbukkit-1.7.2-R0.2.jar</systemPath>
     </dependency>
 
   </dependencies>
