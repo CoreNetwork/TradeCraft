@@ -24,6 +24,8 @@ public class TradeCraftPlugin extends JavaPlugin {
 		
 		commands.put("reload", new ReloadCommand());
 
+        getServer().getPluginManager().registerEvents(new TradeCraftListener(), this);
+
 		IO.LoadSettings();
         NMSVillagerManager.register();
 	}

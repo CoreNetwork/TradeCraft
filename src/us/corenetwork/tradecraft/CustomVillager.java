@@ -10,12 +10,10 @@ public class CustomVillager extends EntityVillager {
 
     public CustomVillager(World world) {
         super(world);
-        System.out.println("creating villager 1...");
     }
 
     public CustomVillager(World world, int i) {
         super(world, i);
-        System.out.println("creating villager 2...");
     }
 
     @Override

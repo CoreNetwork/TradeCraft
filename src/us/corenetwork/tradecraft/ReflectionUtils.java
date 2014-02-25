@@ -10,6 +10,21 @@ public class ReflectionUtils {
     {
         try {
             Class cls = obj.getClass();
+
+            Field fieldObj = cls.getDeclaredField(field);
+            fieldObj.setAccessible(true);
+            return fieldObj.get(obj);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object get(Class cls, Object obj, String field)
+    {
+        try {
             Field fieldObj = cls.getDeclaredField(field);
             fieldObj.setAccessible(true);
             return fieldObj.get(obj);
