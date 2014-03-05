@@ -27,11 +27,13 @@ public class TradeCraftPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TradeCraftListener(), this);
 
 		IO.LoadSettings();
+        IO.PrepareDB();
         NMSVillagerManager.register();
 	}
 
 	@Override
 	public void onDisable() {
+        IO.freeConnection();
 	}
 	
 	@Override

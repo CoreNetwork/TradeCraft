@@ -2,7 +2,9 @@ package us.corenetwork.tradecraft;
 
 
 public enum Setting {	
-	
+
+    CURRENCY("Currency", 388),
+
 	DEBUG("Debug", false),
 	
 	MESSAGE_NO_PERMISSION("Messages.NoPermission", "No permission!"),

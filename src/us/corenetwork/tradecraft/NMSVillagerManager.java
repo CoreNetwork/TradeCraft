@@ -7,6 +7,7 @@ import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftVillager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.List;
@@ -75,5 +76,11 @@ public class NMSVillagerManager {
     public static boolean isCustomVillager(Entity entity)
     {
         return ((CraftEntity) entity).getHandle() instanceof CustomVillager;
+    }
+
+    public static int getType(Villager villager)
+    {
+        EntityVillager nmsVillager = ((CraftVillager) villager).getHandle();
+        return nmsVillager.getProfession();
     }
 }
