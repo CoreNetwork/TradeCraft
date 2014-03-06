@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Matej on 23.2.2014.
@@ -87,7 +88,10 @@ public class CustomVillager extends EntityVillager {
 
         if (areAllTiersUnlocked())
         {
-
+            if (random.nextDouble() < Settings.getDouble(Setting.ALL_UNLOCKED_REFRESH_CHANCE))
+            {
+                refreshAll();
+            }
         }
         else
         {

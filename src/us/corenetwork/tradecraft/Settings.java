@@ -32,6 +32,11 @@ public class Settings {
 		return 	((Number) getProperty(setting)).intValue();
 	}
 
+    public static double getDouble(Setting setting)
+    {
+        return 	((Number) getProperty(setting)).doubleValue();
+    }
+
 	public static String getString(Setting setting)
 	{
 		return 	(String) getProperty(setting);
