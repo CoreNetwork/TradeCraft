@@ -208,7 +208,7 @@ public class CustomVillager extends EntityVillager {
 
         try
         {
-            PreparedStatement statement = IO.getConnection().prepareStatement("UPDATE offers SET tradeCounter = 0 WHERE Villager = ? AND ID = ?");
+            PreparedStatement statement = IO.getConnection().prepareStatement("UPDATE offers SET TradesLeft = ? WHERE Villager = ? AND ID = ?");
 
             for (int i = 0; i < trades.size(); i++)
             {
@@ -217,7 +217,8 @@ public class CustomVillager extends EntityVillager {
                 CustomRecipe recipe = (CustomRecipe) trades.get(i);
                 recipe.setTradesLeft(tradesLeft);
 
-                statement.setString(1, uniqueID.toString());
+                statement.setInt(1, tradesLeft);
+                statement.setString(2, uniqueID.toString());
                 statement.setInt(2, i);
                 statement.addBatch();
             }
