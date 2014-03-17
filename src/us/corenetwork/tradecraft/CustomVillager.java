@@ -1,6 +1,8 @@
 package us.corenetwork.tradecraft;
 
 import net.minecraft.server.v1_7_R1.*;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_7_R1.util.CraftMagicNumbers;
 
 import java.sql.PreparedStatement;
@@ -178,6 +180,7 @@ public class CustomVillager extends EntityVillager {
                 int data = set.getInt("FirstItemDamage");
                 int amount = set.getInt("FirstItemAmount");
                 itemA = new ItemStack(CraftMagicNumbers.getItem(id), amount, data);
+                Util.loadNBT(set.getBytes("FirstItemNBT"), itemA);
 
                 //Second item
                 id = set.getInt("SecondItemID");
@@ -186,6 +189,7 @@ public class CustomVillager extends EntityVillager {
                     data = set.getInt("SecondtItemDamage");
                     amount = set.getInt("SecondItemAmount");
                     itemB = new ItemStack(CraftMagicNumbers.getItem(id), amount, data);
+                    Util.loadNBT(set.getBytes("SecondItemNBT"), itemB);
                 }
 
                 //Result item
@@ -193,6 +197,7 @@ public class CustomVillager extends EntityVillager {
                 data = set.getInt("ThirdItemDamage");
                 amount = set.getInt("ThirdItemAmount");
                 itemC = new ItemStack(CraftMagicNumbers.getItem(id), amount, data);
+                Util.loadNBT(set.getBytes("ThirdItemNBT"), itemC);
 
                 CustomRecipe recipe;
                 if (itemB == null)
@@ -282,30 +287,31 @@ public class CustomVillager extends EntityVillager {
 
                 statement.setInt(3, CraftMagicNumbers.getId(recipe.getBuyItem1().getItem()));
                 statement.setInt(4, recipe.getBuyItem1().getData());
-                statement.setString(5, "");
+
+
+                statement.setBytes(5, Util.getNBT(recipe.getBuyItem1()));
                 statement.setInt(6, recipe.getBuyItem1().count);
 
                 if (recipe.hasSecondItem())
                 {
                     statement.setInt(7, CraftMagicNumbers.getId(recipe.getBuyItem2().getItem()));
                     statement.setInt(8, recipe.getBuyItem2().getData());
-                    statement.setString(9, "");
+                    statement.setBytes(9, Util.getNBT(recipe.getBuyItem2()));
                     statement.setInt(10, recipe.getBuyItem2().count);
                 }
                 else
                 {
                     statement.setInt(7, 0);
                     statement.setInt(8, 0);
-                    statement.setString(9, "");
+                    statement.setBytes(9, new byte[0]);
                     statement.setInt(10, 0);
 
                 }
 
                 statement.setInt(11, CraftMagicNumbers.getId(recipe.getBuyItem3().getItem()));
                 statement.setInt(12, recipe.getBuyItem3().getData());
-                statement.setString(13, "");
+                statement.setBytes(13, Util.getNBT(recipe.getBuyItem3()));
                 statement.setInt(14, recipe.getBuyItem3().count);
-
 
                 statement.setInt(15, tier);
 

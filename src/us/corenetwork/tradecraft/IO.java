@@ -86,7 +86,7 @@ public class IO {
             conn = IO.getConnection();//            {
             st = conn.createStatement();
             st.executeUpdate("CREATE TABLE IF NOT EXISTS villagers (ID STRING NOT NULL, Career STRING NOT NULL)");
-            st.executeUpdate("CREATE TABLE IF NOT EXISTS offers (Villager STRING, ID INTEGER, FirstItemID INTEGER, FirstItemDamage INTEGER, FirstItemNBT STRING, FirstItemAmount INTEGER, SecondItemID INTEGER, SecondItemDamage INTEGER, SecondItemNBT STRING, SecondItemAmount INTEGER, ThirdItemID INTEGER, ThirdItemDamage INTEGER, ThirdItemNBT STRING, ThirdItemAmount INTEGER, Tier INTEGER, TradesLeft INTEGER)");
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS offers (Villager STRING, ID INTEGER, FirstItemID INTEGER, FirstItemDamage INTEGER, FirstItemNBT BLOB, FirstItemAmount INTEGER, SecondItemID INTEGER, SecondItemDamage INTEGER, SecondItemNBT BLOB, SecondItemAmount INTEGER, ThirdItemID INTEGER, ThirdItemDamage INTEGER, ThirdItemNBT BLOB, ThirdItemAmount INTEGER, Tier INTEGER, TradesLeft INTEGER)");
             conn.commit();
             st.close();
         } catch (SQLException e) {

@@ -1,7 +1,14 @@
 package us.corenetwork.tradecraft;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import net.minecraft.server.v1_7_R1.ItemStack;
+import net.minecraft.server.v1_7_R1.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class Util {
 	public static Boolean isInteger(String text) {
@@ -120,6 +127,56 @@ public class Util {
             if (Util.hasPermission(p,permission))
                 Message(message, p);
         }
+    }
+
+    public static byte[] getNBT(ItemStack stack)
+    {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutput = new DataOutputStream(byteStream);
+        NBTTagCompound tag = stack.getTag();
+        if (tag == null)
+            return new byte[0];
+
+        try {
+            Method method = NBTTagCompound.class.getDeclaredMethod("write", DataOutput.class);
+            method.setAccessible(true);
+
+            method.invoke(tag, dataOutput);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return byteStream.toByteArray();
+    }
+
+    public static void loadNBT(byte[] nbt, ItemStack stack)
+    {
+        if (nbt == null || nbt.length == 0)
+            return;
+
+        NBTTagCompound tag = new NBTTagCompound();
+
+        ByteArrayInputStream stream = new ByteArrayInputStream(nbt);
+        DataInputStream dataInput = new DataInputStream(stream);
+
+        try {
+            Method method = NBTTagCompound.class.getDeclaredMethod("read", DataInput.class, Integer.class);
+            method.setAccessible(true);
+
+            method.invoke(tag, dataInput, 0);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        stack.setTag(tag);
     }
 
 }

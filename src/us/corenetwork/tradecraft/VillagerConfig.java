@@ -2,14 +2,17 @@ package us.corenetwork.tradecraft;
 
 import net.minecraft.server.v1_7_R1.Block;
 import net.minecraft.server.v1_7_R1.Item;
-import net.minecraft.server.v1_7_R1.ItemStack;
 import net.minecraft.server.v1_7_R1.MerchantRecipe;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
+import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_7_R1.util.CraftMagicNumbers;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Villager;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -51,21 +54,22 @@ public class VillagerConfig {
                 return trades;
             }
 
-            ItemStack itemA = getItemStack((Map<?, ?>) map.get("itemA"));
-            ItemStack itemC = getItemStack((Map<?, ?>) map.get("result"));
+            ItemStack itemA = getItemStack((Map<?, ?>) map.get("itemA"), null, null);
 
             ItemStack itemB = null;
             if (map.containsKey("itemB"))
-                itemB = getItemStack((Map<?, ?>) map.get("itemB"));
+                itemB = getItemStack((Map<?, ?>) map.get("itemB"), itemA, null);
+
+            ItemStack itemC = getItemStack((Map<?, ?>) map.get("result"), itemA, itemB);
 
             if (itemA == null || itemC == null)
                 continue;
 
             CustomRecipe recipe;
             if (itemB == null)
-                recipe = new CustomRecipe(itemA, itemC);
+                recipe = new CustomRecipe(CraftItemStack.asNMSCopy(itemA), CraftItemStack.asNMSCopy(itemC));
             else
-                recipe = new CustomRecipe(itemA, itemB, itemC);
+                recipe = new CustomRecipe(CraftItemStack.asNMSCopy(itemA), CraftItemStack.asNMSCopy(itemB), CraftItemStack.asNMSCopy(itemC));
 
             trades.add(recipe);
         }
@@ -73,60 +77,109 @@ public class VillagerConfig {
         return trades;
     }
 
-    private static ItemStack getItemStack(Map<?,?> map)
+    private static ItemStack getItemStack(Map<?,?> map, ItemStack itemA, ItemStack itemB)
     {
         int id;
-        Object idO = map.get("id");
-        if (idO == null)
+        int amount;
+        if (map.containsKey("currency"))
         {
-            Console.warning("Invalid trades config: Missing item ID!");
-            return null;
+            id = Settings.getInt(Setting.CURRENCY);
+            amount = getRandomNumber(map.get("currency"));
         }
-        if (idO instanceof String)
+        else
         {
-            if ("currency".equalsIgnoreCase((String) idO))
+            Object idO = map.get("id");
+            if (idO == null || !(idO instanceof Integer))
             {
-                id = Settings.getInt(Setting.CURRENCY);
-            }
-            else
-            {
-                Console.warning("Invalid trades config: Invalid item ID!");
+                Console.warning("Invalid trades config: Missing or invalid item ID!");
                 return null;
             }
-        }
-        else
+
             id = ((Integer) idO).intValue();
 
-
-        int amount;
-        Object amountO = map.get("amount");
-        if (amountO == null)
-        {
-            Console.warning("Invalid trades config: Missing item amount!");
-            return null;
+            amount = getRandomNumber(map.get("amount"));
         }
-        if (amountO instanceof Integer)
-            amount = ((Integer) amountO).intValue();
-        else
-        {
-            String amountS = (String) amountO;
-            if (!amountS.contains(","))
-            {
-                Console.warning("Invalid trades config: Invalid item amount!");
-            }
 
-            int min = Integer.parseInt(amountS.substring(0, amountS.indexOf(",")));
-            int max = Integer.parseInt(amountS.substring(amountS.indexOf(",") + 1));
-
-            amount = TradeCraftPlugin.random.nextInt(max - min) + min;
-        }
 
         Integer data = 0;
         if (map.containsKey("data"))
             data = (Integer) map.get("data");
 
-        ItemStack stack = new ItemStack(CraftMagicNumbers.getItem(id), amount, data);
+        ItemStack stack = new ItemStack(id, amount, data.shortValue());
+
+        List<Map<String,?>> enchants = (List<Map<String,?>>) map.get("enchants");
+        if (enchants != null)
+        {
+            for (Map<String, ?> enchantOuterMap : enchants)
+            {
+                Map<String, ?> enchant = (Map<String, ?>) enchantOuterMap.values().toArray()[0];
+
+                Number chance = (Number) enchant.get("chance");
+                if (chance == null)
+                {
+                    Console.warning("Invalid trades config: Missing enchant chance!");
+                    continue;
+
+                }
+                if (chance.doubleValue() < TradeCraftPlugin.random.nextDouble())
+                    continue;
+
+                Number enchantID = (Number) enchant.get("id");
+                if (enchantID == null)
+                {
+                    Console.warning("Invalid trades config: Missing enchant ID!");
+                    continue;
+                }
+
+                int enchantLevel = getRandomNumber(enchant.get("level"));
+                if (enchantLevel == 0)
+                {
+                    Console.warning("Invalid trades config: Missing or invalid enchant level!");
+                    continue;
+                }
+
+                Object bonusA = enchant.get("bonusAmountA");
+                if (bonusA != null && itemA != null)
+                {
+                    int bonusAmount = getRandomNumber(bonusA);
+                    itemA.setAmount(Math.min(itemA.getAmount() + bonusAmount, itemA.getType().getMaxStackSize()));
+                }
+
+                Object bonusB = enchant.get("bonusAmountB");
+                if (bonusB != null && itemB != null)
+                {
+                    int bonusAmount = getRandomNumber(bonusB);
+                    itemB.setAmount(Math.min(itemB.getAmount() + bonusAmount, itemB.getType().getMaxStackSize()));
+                }
+
+                stack.addUnsafeEnchantment(Enchantment.getById(enchantID.intValue()), enchantLevel);
+            }
+        }
+
+
         return stack;
+    }
+
+    private static int getRandomNumber(Object node)
+    {
+        if (node == null)
+        {
+            Console.warning("Invalid trades config: Invalid number!");
+            return 0;
+        }
+        if (node instanceof Integer)
+            return ((Integer) node).intValue();
+
+        String amountS = (String) node;
+        if (!amountS.contains(","))
+        {
+            Console.warning("Invalid trades config: Invalid number!");
+        }
+
+        int min = Integer.parseInt(amountS.substring(0, amountS.indexOf(",")));
+        int max = Integer.parseInt(amountS.substring(amountS.indexOf(",") + 1));
+
+        return TradeCraftPlugin.random.nextInt(max - min) + min;
     }
 
     public static String getRandomCareer(int villagerType)
