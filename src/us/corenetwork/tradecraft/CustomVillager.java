@@ -73,6 +73,10 @@ public class CustomVillager extends EntityVillager {
     @Override
     public void a(MerchantRecipe vanillaRecipe)
     {
+        // Yes/No sound
+        this.makeSound("mob.villager.yes", this.bf(), this.bg());
+
+        //Refrehs inventory
         EntityHuman human = b();
         if (human != null && human instanceof EntityPlayer)
         {
@@ -324,6 +328,9 @@ public class CustomVillager extends EntityVillager {
         {
             e.printStackTrace();
         }
+
+        //Particle effect when adding tier
+        this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
     }
 
     private int getLastTier()
