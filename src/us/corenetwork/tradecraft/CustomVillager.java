@@ -73,6 +73,12 @@ public class CustomVillager extends EntityVillager {
     @Override
     public void a(MerchantRecipe vanillaRecipe)
     {
+        EntityHuman human = b();
+        if (human != null && human instanceof EntityPlayer)
+        {
+            ((EntityPlayer) human).updateInventory(human.activeContainer);
+        }
+
         CustomRecipe recipe = (CustomRecipe) vanillaRecipe;
         if (trades == null)
             return;
