@@ -11,7 +11,7 @@ import net.minecraft.server.v1_7_R1.NBTTagCompound;
 public class CustomRecipe extends MerchantRecipe {
     private boolean locked = false;
     private int tier = 0;
-    private int tradesLeft = 1;
+    private int tradesLeft = 0;
 
     public CustomRecipe(ItemStack itemStack, ItemStack itemStack2, ItemStack itemStack3) {
         super(itemStack, itemStack2, itemStack3);
