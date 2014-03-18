@@ -1,5 +1,4 @@
 package us.corenetwork.tradecraft;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import net.minecraft.server.v1_7_R1.ItemStack;
 import net.minecraft.server.v1_7_R1.NBTTagCompound;
 import org.bukkit.*;
