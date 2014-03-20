@@ -1,6 +1,7 @@
 package us.corenetwork.tradecraft;
 
 import net.minecraft.server.v1_7_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_7_R1.util.CraftMagicNumbers;
@@ -82,6 +83,15 @@ public class CustomVillager extends EntityVillager {
         EntityHuman human = b();
         if (human != null && human instanceof EntityPlayer)
         {
+            final org.bukkit.entity.Player player = ((EntityPlayer) human).getBukkitEntity();
+            Bukkit.getScheduler().runTask(TradeCraftPlugin.instance, new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    player.updateInventory();
+                }
+            });
             ((EntityPlayer) human).updateInventory(human.activeContainer);
         }
 

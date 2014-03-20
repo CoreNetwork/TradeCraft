@@ -17,7 +17,7 @@ public class Util {
 		} catch (NumberFormatException e) {
 			return false;
 		}
-	}
+    }
 
 	public static Boolean isDouble(String text) {
 		try {
