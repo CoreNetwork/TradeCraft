@@ -16,9 +16,12 @@ import java.util.Set;
  * Created by Matej on 23.2.2014.
  */
 public class CustomVillager extends EntityVillager {
-    private String carreer;
+    private String carreer = "NOT_INITIALIZED";
     private MerchantRecipeList trades;
 
+    //Schedules after window closes
+    private boolean createNewTier = false;
+    private boolean restockAll = false;
 
     public CustomVillager(World world) {
         super(world);
@@ -34,13 +37,22 @@ public class CustomVillager extends EntityVillager {
 
     private void init()
     {
-        loadVillagerData();
-        loadTradesFromDB();
+        trades = new MerchantRecipeList();
 
-        if (trades.size() == 0)
+        Bukkit.getScheduler().scheduleSyncDelayedTask(TradeCraftPlugin.instance, new Runnable()
         {
-            addTier(0);
-        }
+            @Override
+            public void run()
+            {
+                loadVillagerData();
+                loadTradesFromDB();
+
+                if (trades.size() == 0)
+                {
+                    addTier(0);
+                }
+            }
+        });
     }
 
     @Override
@@ -68,6 +80,34 @@ public class CustomVillager extends EntityVillager {
         }
 
         return trades;
+    }
+
+    /**
+     * Activated when new player starts trading (or null when nobody is trading)
+     */
+
+    @Override
+    public void a_(EntityHuman entityHuman)
+    {
+        if (entityHuman == null) //Nobody is trading now
+        {
+            if (createNewTier)
+            {
+                addTier(getLastTier() + 1);
+                refreshAll();
+            }
+            else if (restockAll)
+            {
+                refreshAll();
+            }
+
+            restockAll = false;
+            createNewTier = false;
+        }
+        else
+            Bukkit.broadcastMessage("Trading with: " + carreer);
+
+        super.a_(entityHuman);
     }
 
     /**
@@ -107,20 +147,20 @@ public class CustomVillager extends EntityVillager {
         }
 
         incrementCounter(tradeID);
+        Bukkit.broadcastMessage("Trade completed! Left:" + recipe.getTradesLeft());
 
         if (areAllTiersUnlocked())
         {
             if (random.nextDouble() < Settings.getDouble(Setting.ALL_UNLOCKED_REFRESH_CHANCE))
             {
-                refreshAll();
+                restockAll = true;
             }
         }
         else
         {
             if (isLastTier(recipe) || random.nextInt(100) < 20) //Add new tier when on last trade or with 20% chance
             {
-                addTier(getLastTier() + 1);
-                refreshAll();
+                createNewTier = true;
             }
         }
     }
@@ -154,6 +194,7 @@ public class CustomVillager extends EntityVillager {
     private void createVillagerData()
     {
         carreer = VillagerConfig.getRandomCareer(getProfession());
+        Bukkit.broadcastMessage("Decided career: " + carreer);
 
         try
         {
@@ -172,7 +213,6 @@ public class CustomVillager extends EntityVillager {
 
     private void loadTradesFromDB()
     {
-        trades = new MerchantRecipeList();
         try
         {
             PreparedStatement statement = IO.getConnection().prepareStatement("SELECT * FROM offers WHERE Villager = ?");

@@ -3,6 +3,7 @@ package us.corenetwork.tradecraft;
 import net.minecraft.server.v1_7_R1.Block;
 import net.minecraft.server.v1_7_R1.Item;
 import net.minecraft.server.v1_7_R1.MerchantRecipe;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
@@ -184,6 +185,8 @@ public class VillagerConfig {
 
     public static String getRandomCareer(int villagerType)
     {
+        Bukkit.broadcastMessage("Got new villager: " + villagerType);
+
         List<String> careers = IO.config.getStringList("Professions." + villagerType);
         if (careers.size() == 0)
         {
