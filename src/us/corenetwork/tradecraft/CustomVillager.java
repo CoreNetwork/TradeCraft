@@ -123,6 +123,12 @@ public class CustomVillager extends EntityVillager {
         super.a_(entityHuman);
     }
 
+    @Override
+    public String getCustomName()
+    {
+        return carreer;
+    }
+
     /**
      * Activated when player makes a trade
      */
