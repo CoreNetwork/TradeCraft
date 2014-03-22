@@ -68,7 +68,7 @@ public class CustomVillager extends EntityVillager {
         {
             Console.severe("Villager " + uniqueID.toString() + " has no trades!");
 
-            CustomRecipe recipe = new CustomRecipe(new ItemStack((Block) Block.REGISTRY.a("bedrock"), 65), new ItemStack((Block) Block.REGISTRY.a("bedrock"), 65));
+            CustomRecipe recipe = new CustomRecipe(new ItemStack((Block) Block.REGISTRY.a("bedrock"), 65), new ItemStack((Block) Block.REGISTRY.a("bedrock"), 1));
             //recipe.lockManually();
 
             MerchantRecipeList list = new MerchantRecipeList();
