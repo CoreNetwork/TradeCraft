@@ -1,23 +1,19 @@
 package us.corenetwork.tradecraft;
 
 import net.minecraft.server.v1_7_R1.*;
-import net.minecraft.util.com.google.common.reflect.Reflection;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_7_R1.util.CraftMagicNumbers;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Matej on 23.2.2014.
  */
 public class CustomVillager extends EntityVillager {
-    private String carreer = "NOT_INITIALIZED";
+    private String career = "NOT_INITIALIZED";
     private MerchantRecipeList trades;
     private String lastTradingPlayer = null;
 
@@ -118,7 +114,7 @@ public class CustomVillager extends EntityVillager {
             createNewTier = false;
         }
         else
-            Bukkit.broadcastMessage("Trading with: " + carreer);
+            Bukkit.broadcastMessage("Trading with: " + career);
 
         super.a_(entityHuman);
     }
@@ -126,7 +122,7 @@ public class CustomVillager extends EntityVillager {
     @Override
     public String getCustomName()
     {
-        return carreer;
+        return career;
     }
 
     /**
@@ -196,7 +192,7 @@ public class CustomVillager extends EntityVillager {
             ResultSet set = statement.executeQuery();
             if (set.next())
             {
-                carreer = set.getString("Career");
+                career = set.getString("Career");
 
                 statement.close();
             }
@@ -214,17 +210,17 @@ public class CustomVillager extends EntityVillager {
 
     private void createVillagerData()
     {
-        carreer = VillagerConfig.getRandomCareer(getProfession());
-        if (carreer == null)
-            carreer = "NO_CAREER";
+        career = VillagerConfig.getRandomCareer(getProfession());
+        if (career == null)
+            career = "NO_CAREER";
 
-        Bukkit.broadcastMessage("Decided career: " + carreer);
+        Bukkit.broadcastMessage("Decided career: " + career);
 
         try
         {
             PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO villagers (ID, Career) VALUES (?,?)");
             statement.setString(1, uniqueID.toString());
-            statement.setString(2, carreer);
+            statement.setString(2, career);
             statement.executeUpdate();
             IO.getConnection().commit();
             statement.close();
@@ -344,7 +340,7 @@ public class CustomVillager extends EntityVillager {
 
     private void addTier(int tier)
     {
-        List<CustomRecipe> recipes = VillagerConfig.getTrades(carreer, tier);
+        List<CustomRecipe> recipes = VillagerConfig.getTrades(career, tier);
 
         Console.info("Adding trades: " + recipes.size());
 
@@ -425,7 +421,7 @@ public class CustomVillager extends EntityVillager {
 
     private boolean areAllTiersUnlocked()
     {
-        return !VillagerConfig.hasTrades(carreer, getLastTier() + 1);
+        return !VillagerConfig.hasTrades(career, getLastTier() + 1);
     }
 
     private static int getDefaultNumberOfTrades()
