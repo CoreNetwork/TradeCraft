@@ -1,6 +1,7 @@
 package us.corenetwork.tradecraft;
 
 import net.minecraft.server.v1_7_R1.*;
+import net.minecraft.util.com.google.common.reflect.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class CustomVillager extends EntityVillager {
     private String carreer = "NOT_INITIALIZED";
     private MerchantRecipeList trades;
+    private String lastTradingPlayer = null;
 
     //Schedules after window closes
     private boolean createNewTier = false;
@@ -85,7 +87,6 @@ public class CustomVillager extends EntityVillager {
     /**
      * Activated when new player starts trading (or null when nobody is trading)
      */
-
     @Override
     public void a_(EntityHuman entityHuman)
     {
@@ -95,6 +96,18 @@ public class CustomVillager extends EntityVillager {
             {
                 addTier(getLastTier() + 1);
                 refreshAll();
+
+                //Particle effects and increasing village population
+                Village village = (Village) ReflectionUtils.get(EntityVillager.class, this, "village");
+
+                if (village != null && lastTradingPlayer != null) {
+                    Bukkit.broadcastMessage("Reputation UP!");
+                    this.world.broadcastEntityEffect(this, (byte) 14);
+                    village.a(lastTradingPlayer, 1);
+                }
+
+                //Particle effect when adding tier
+                this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
             }
             else if (restockAll)
             {
@@ -133,6 +146,8 @@ public class CustomVillager extends EntityVillager {
                 }
             });
             ((EntityPlayer) human).updateInventory(human.activeContainer);
+
+            lastTradingPlayer = human.getName();
         }
 
         CustomRecipe recipe = (CustomRecipe) vanillaRecipe;
@@ -194,6 +209,9 @@ public class CustomVillager extends EntityVillager {
     private void createVillagerData()
     {
         carreer = VillagerConfig.getRandomCareer(getProfession());
+        if (carreer == null)
+            carreer = "NO_CAREER";
+
         Bukkit.broadcastMessage("Decided career: " + carreer);
 
         try
@@ -236,7 +254,7 @@ public class CustomVillager extends EntityVillager {
                 id = set.getInt("SecondItemID");
                 if (id > 0)
                 {
-                    data = set.getInt("SecondtItemDamage");
+                    data = set.getInt("SecondItemDamage");
                     amount = set.getInt("SecondItemAmount");
                     itemB = new ItemStack(CraftMagicNumbers.getItem(id), amount, data);
                     Util.loadNBT(set.getBytes("SecondItemNBT"), itemB);
@@ -384,9 +402,6 @@ public class CustomVillager extends EntityVillager {
         {
             e.printStackTrace();
         }
-
-        //Particle effect when adding tier
-        this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
     }
 
     private int getLastTier()
