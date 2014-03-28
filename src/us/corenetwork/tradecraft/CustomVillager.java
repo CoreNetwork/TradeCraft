@@ -1,8 +1,8 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R1.*;
+import net.minecraft.server.v1_7_R2.*;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_7_R1.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_7_R2.util.CraftMagicNumbers;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +16,7 @@ public class CustomVillager extends EntityVillager {
     private String career = "NOT_INITIALIZED";
     private MerchantRecipeList trades;
     private String lastTradingPlayer = null;
+
 
     //Schedules after window closes
     private boolean createNewTier = false;
@@ -125,6 +126,24 @@ public class CustomVillager extends EntityVillager {
         return career;
     }
 
+    @Override
+    public boolean hasCustomName()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean getCustomNameVisible()
+    {
+        return false;
+    }
+
+    @Override
+    public String getName()
+    {
+        return "";
+    }
+
     /**
      * Activated when player makes a trade
      */
@@ -132,7 +151,7 @@ public class CustomVillager extends EntityVillager {
     public void a(MerchantRecipe vanillaRecipe)
     {
         // Yes/No sound
-        this.makeSound("mob.villager.yes", this.bf(), this.bg());
+        this.makeSound("mob.villager.yes", this.be(), this.bf());
 
         //Refrehs inventory
         EntityHuman human = b();

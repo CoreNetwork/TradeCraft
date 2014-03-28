@@ -1,14 +1,16 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R1.Item;
-import net.minecraft.server.v1_7_R1.ItemStack;
-import net.minecraft.server.v1_7_R1.MerchantRecipe;
-import net.minecraft.server.v1_7_R1.NBTTagCompound;
+
+import net.minecraft.server.v1_7_R2.Item;
+import net.minecraft.server.v1_7_R2.ItemStack;
+import net.minecraft.server.v1_7_R2.MerchantRecipe;
+import net.minecraft.server.v1_7_R2.NBTTagCompound;
 
 /**
  * Created by Matej on 5.3.2014.
  */
-public class CustomRecipe extends MerchantRecipe {
+public class CustomRecipe extends MerchantRecipe
+{
     private boolean locked = false;
     private int tier = 0;
     private int tradesLeft = 0;
