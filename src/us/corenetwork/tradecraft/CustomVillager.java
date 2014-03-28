@@ -68,7 +68,7 @@ public class CustomVillager extends EntityVillager {
     public MerchantRecipeList getOffers(EntityHuman entityHuman) {
         if (trades == null || trades.size() == 0)
         {
-            Console.severe("Villager " + uniqueID.toString() + " has no trades!");
+            Logs.severe("Villager " + uniqueID.toString() + " has no trades!");
 
             CustomRecipe recipe = new CustomRecipe(new ItemStack((Block) Block.REGISTRY.a("bedrock"), 65), new ItemStack((Block) Block.REGISTRY.a("bedrock"), 1));
             //recipe.lockManually();
@@ -99,7 +99,7 @@ public class CustomVillager extends EntityVillager {
                 Village village = (Village) ReflectionUtils.get(EntityVillager.class, this, "village");
 
                 if (village != null && lastTradingPlayer != null) {
-                    Bukkit.broadcastMessage("Reputation UP!");
+                    Logs.debugIngame("Reputation UP!");
                     this.world.broadcastEntityEffect(this, (byte) 14);
                     village.a(lastTradingPlayer, 1);
                 }
@@ -116,7 +116,7 @@ public class CustomVillager extends EntityVillager {
             createNewTier = false;
         }
         else
-            Bukkit.broadcastMessage("Trading with: " + career);
+            Logs.debugIngame("Trading with: " + career);
 
         super.a_(entityHuman);
     }
@@ -179,12 +179,12 @@ public class CustomVillager extends EntityVillager {
         int tradeID = trades.indexOf(recipe);
         if (tradeID < 0)
         {
-            Console.severe("Player completed unknown trade on villager " + uniqueID.toString() + "! ");
+            Logs.severe("Player completed unknown trade on villager " + uniqueID.toString() + "! ");
             return;
         }
 
         incrementCounter(tradeID);
-        Bukkit.broadcastMessage("Trade completed! Left:" + recipe.getTradesLeft());
+        Logs.debugIngame("Trade completed! Left:" + recipe.getTradesLeft());
 
         if (areAllTiersUnlocked())
         {
@@ -234,7 +234,7 @@ public class CustomVillager extends EntityVillager {
         if (career == null)
             career = "NO_CAREER";
 
-        Bukkit.broadcastMessage("Decided career: " + career);
+        Logs.debugIngame("Decided career: " + career);
 
         try
         {
@@ -362,7 +362,7 @@ public class CustomVillager extends EntityVillager {
     {
         List<CustomRecipe> recipes = VillagerConfig.getTrades(career, tier);
 
-        Console.info("Adding trades: " + recipes.size());
+        Logs.debugIngame("Adding trades: " + recipes.size());
 
         try
         {

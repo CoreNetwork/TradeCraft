@@ -1,6 +1,5 @@
 package us.corenetwork.tradecraft;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R2.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +27,7 @@ public class VillagerConfig {
 
         if (tradesConfig == null)
         {
-            Console.warning("No trades found for career " + career + "!");
+            Logs.warning("No trades found for career " + career + "!");
             return trades;
         }
 
@@ -37,14 +36,14 @@ public class VillagerConfig {
             Map<String, ?> outerMap = (Map<String, ?>) mapO;
             if (outerMap.size() != 1)
             {
-                Console.warning("Invalid trades config for career " + career + "!");
+                Logs.warning("Invalid trades config for career " + career + "!");
                 return trades;
             }
 
             Map<String, ?> map = (Map<String, ?>) outerMap.get("trade");
             if (map == null)
             {
-                Console.warning("Invalid trades config for career " + career + "!");
+                Logs.warning("Invalid trades config for career " + career + "!");
                 return trades;
             }
 
@@ -85,7 +84,7 @@ public class VillagerConfig {
             Object idO = map.get("id");
             if (idO == null || !(idO instanceof Integer))
             {
-                Console.warning("Invalid trades config: Missing or invalid item ID!");
+                Logs.warning("Invalid trades config: Missing or invalid item ID!");
                 return null;
             }
 
@@ -111,7 +110,7 @@ public class VillagerConfig {
                 Number chance = (Number) enchant.get("chance");
                 if (chance == null)
                 {
-                    Console.warning("Invalid trades config: Missing enchant chance!");
+                    Logs.warning("Invalid trades config: Missing enchant chance!");
                     continue;
 
                 }
@@ -121,14 +120,14 @@ public class VillagerConfig {
                 Number enchantID = (Number) enchant.get("id");
                 if (enchantID == null)
                 {
-                    Console.warning("Invalid trades config: Missing enchant ID!");
+                    Logs.warning("Invalid trades config: Missing enchant ID!");
                     continue;
                 }
 
                 int enchantLevel = getRandomNumber(enchant.get("level"));
                 if (enchantLevel == 0)
                 {
-                    Console.warning("Invalid trades config: Missing or invalid enchant level!");
+                    Logs.warning("Invalid trades config: Missing or invalid enchant level!");
                     continue;
                 }
 
@@ -158,7 +157,7 @@ public class VillagerConfig {
     {
         if (node == null)
         {
-            Console.warning("Invalid trades config: Invalid number!");
+            Logs.warning("Invalid trades config: Invalid number!");
             return 0;
         }
         if (node instanceof Integer)
@@ -167,7 +166,7 @@ public class VillagerConfig {
         String amountS = (String) node;
         if (!amountS.contains(","))
         {
-            Console.warning("Invalid trades config: Invalid number!");
+            Logs.warning("Invalid trades config: Invalid number!");
         }
 
         int min = Integer.parseInt(amountS.substring(0, amountS.indexOf(",")));
@@ -178,12 +177,12 @@ public class VillagerConfig {
 
     public static String getRandomCareer(int villagerType)
     {
-        Bukkit.broadcastMessage("Got new villager: " + villagerType);
+        Logs.debugIngame("Got new villager: " + villagerType);
 
         List<String> careers = IO.config.getStringList("Professions." + villagerType);
         if (careers.size() == 0)
         {
-            Console.severe("No professions found for villager number " + villagerType + ".");
+            Logs.severe("No professions found for villager number " + villagerType + ".");
             return null;
         }
 
