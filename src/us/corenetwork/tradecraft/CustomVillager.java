@@ -17,6 +17,7 @@ public class CustomVillager extends EntityVillager {
     private MerchantRecipeList trades;
     private String lastTradingPlayer = null;
 
+    private boolean overrideName = false;
 
     //Schedules after window closes
     private boolean createNewTier = false;
@@ -120,28 +121,28 @@ public class CustomVillager extends EntityVillager {
         super.a_(entityHuman);
     }
 
+
+    /**
+     * Called when somebody right clicks on villager
+     * @return has trade window been opened
+     */
+    @Override
+    public boolean a(EntityHuman entityHuman)
+    {
+        overrideName = true;
+        boolean returningBool = super.a(entityHuman);
+        overrideName = false;
+
+        return returningBool;
+    }
+
     @Override
     public String getCustomName()
     {
-        return career;
-    }
-
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean getCustomNameVisible()
-    {
-        return false;
-    }
-
-    @Override
-    public String getName()
-    {
-        return "";
+        if (overrideName)
+            return career;
+        else
+            return super.getCustomName();
     }
 
     /**
