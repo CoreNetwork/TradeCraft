@@ -1,7 +1,6 @@
 package us.corenetwork.tradecraft;
 
 import org.bukkit.craftbukkit.v1_7_R2.inventory.CraftItemStack;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -103,57 +102,15 @@ public class VillagerConfig {
         List<Map<String,?>> enchants = (List<Map<String,?>>) map.get("enchants");
         if (enchants != null)
         {
-            for (Map<String, ?> enchantOuterMap : enchants)
-            {
-                Map<String, ?> enchant = (Map<String, ?>) enchantOuterMap.values().toArray()[0];
+            new EnchantParser(stack, itemA, itemB).parse(enchants);
 
-                Number chance = (Number) enchant.get("chance");
-                if (chance == null)
-                {
-                    Logs.warning("Invalid trades config: Missing enchant chance!");
-                    continue;
-
-                }
-                if (chance.doubleValue() < TradeCraftPlugin.random.nextDouble())
-                    continue;
-
-                Number enchantID = (Number) enchant.get("id");
-                if (enchantID == null)
-                {
-                    Logs.warning("Invalid trades config: Missing enchant ID!");
-                    continue;
-                }
-
-                int enchantLevel = getRandomNumber(enchant.get("level"));
-                if (enchantLevel == 0)
-                {
-                    Logs.warning("Invalid trades config: Missing or invalid enchant level!");
-                    continue;
-                }
-
-                Object bonusA = enchant.get("bonusAmountA");
-                if (bonusA != null && itemA != null)
-                {
-                    int bonusAmount = getRandomNumber(bonusA);
-                    itemA.setAmount(Math.min(itemA.getAmount() + bonusAmount, itemA.getType().getMaxStackSize()));
-                }
-
-                Object bonusB = enchant.get("bonusAmountB");
-                if (bonusB != null && itemB != null)
-                {
-                    int bonusAmount = getRandomNumber(bonusB);
-                    itemB.setAmount(Math.min(itemB.getAmount() + bonusAmount, itemB.getType().getMaxStackSize()));
-                }
-
-                stack.addUnsafeEnchantment(Enchantment.getById(enchantID.intValue()), enchantLevel);
-            }
         }
 
 
         return stack;
     }
 
-    private static int getRandomNumber(Object node)
+    public static int getRandomNumber(Object node)
     {
         if (node == null)
         {
