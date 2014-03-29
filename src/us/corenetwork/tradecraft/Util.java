@@ -164,7 +164,7 @@ public class Util {
         DataInputStream dataInput = new DataInputStream(stream);
 
         try {
-            Method method = NBTTagCompound.class.getDeclaredMethod("read", DataInput.class, Integer.class);
+            Method method = NBTTagCompound.class.getDeclaredMethod("load", DataInput.class, Integer.class);
             method.setAccessible(true);
 
             method.invoke(tag, dataInput, 0);
