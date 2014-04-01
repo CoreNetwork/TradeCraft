@@ -103,6 +103,9 @@ public class CustomVillager extends EntityVillager {
                     this.world.broadcastEntityEffect(this, (byte) 14);
                     village.a(lastTradingPlayer, 1);
                 }
+
+                //Particle effect when new tier is created
+                this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
             }
             else if (restockAll)
             {
