@@ -1,7 +1,9 @@
 package us.corenetwork.tradecraft;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,7 +70,14 @@ public class EnchantParser extends NodeParser
                 itemB.setAmount(Math.min(itemB.getAmount() + bonusAmount, itemB.getType().getMaxStackSize()));
             }
 
-            enchantedItem.addUnsafeEnchantment(enchantment, enchantLevel);
+            if (enchantedItem.getType() == Material.ENCHANTED_BOOK)
+            {
+                EnchantmentStorageMeta meta = (EnchantmentStorageMeta) enchantedItem.getItemMeta();
+                meta.addStoredEnchant(enchantment, enchantLevel, true);
+                enchantedItem.setItemMeta(meta);
+            }
+            else
+                enchantedItem.addUnsafeEnchantment(enchantment, enchantLevel);
         }
     }
 }
