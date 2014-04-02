@@ -57,11 +57,17 @@ public class VillagerConfig {
             if (itemA == null || itemC == null)
                 continue;
 
+            itemA.setAmount(Math.min(itemA.getAmount(), 64));
+
             CustomRecipe recipe;
             if (itemB == null)
                 recipe = new CustomRecipe(CraftItemStack.asNMSCopy(itemA), CraftItemStack.asNMSCopy(itemC));
             else
+            {
+                itemB.setAmount(Math.min(itemB.getAmount(), 64));
                 recipe = new CustomRecipe(CraftItemStack.asNMSCopy(itemA), CraftItemStack.asNMSCopy(itemB), CraftItemStack.asNMSCopy(itemC));
+
+            }
 
             trades.add(recipe);
         }
@@ -91,7 +97,6 @@ public class VillagerConfig {
 
             amount = getRandomNumber(map.get("amount"));
         }
-
 
         Integer data = 0;
         if (map.containsKey("data"))
