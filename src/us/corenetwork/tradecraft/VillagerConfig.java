@@ -132,7 +132,7 @@ public class VillagerConfig {
         }
 
         int min = Integer.parseInt(amountS.substring(0, amountS.indexOf(",")));
-        int max = Integer.parseInt(amountS.substring(amountS.indexOf(",") + 1));
+        int max = Integer.parseInt(amountS.substring(amountS.indexOf(",") + 1)) + 1;
 
         return TradeCraftPlugin.random.nextInt(max - min) + min;
     }
