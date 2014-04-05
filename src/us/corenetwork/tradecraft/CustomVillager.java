@@ -83,7 +83,7 @@ public class CustomVillager extends EntityVillager {
     }
 
     /**
-     * Activated when new player starts trading (or null when nobody is trading)
+     * Activated when new player starts trading (or null when nobody is trading (trading window closes))
      */
     @Override
     public void a_(EntityHuman entityHuman)
@@ -191,7 +191,7 @@ public class CustomVillager extends EntityVillager {
 
         if (areAllTiersUnlocked())
         {
-            if (random.nextDouble() < Settings.getDouble(Setting.ALL_UNLOCKED_REFRESH_CHANCE))
+            if (recipe.getTradesPerformed() == 1 || random.nextDouble() < Settings.getDouble(Setting.ALL_UNLOCKED_REFRESH_CHANCE))
             {
                 restockAll = true;
             }
@@ -300,6 +300,7 @@ public class CustomVillager extends EntityVillager {
 
                 recipe.setTier(set.getInt("Tier"));
                 recipe.setTradesLeft(set.getInt("TradesLeft"));
+                recipe.setTradesPerformed(set.getInt("TradesPerformed"));
                 trades.add(recipe);
             }
 
@@ -345,12 +346,15 @@ public class CustomVillager extends EntityVillager {
     {
         CustomRecipe recipe  = (CustomRecipe) trades.get(tradeID);
         recipe.setTradesLeft(recipe.getTradesLeft() - 1);
+        recipe.setTradesPerformed(recipe.getTradesPerformed() + 1);
 
         try
         {
-            PreparedStatement statement = IO.getConnection().prepareStatement("UPDATE offers SET TradesLeft = ? WHERE Villager = ? AND ID = ?");
-            statement.setString(1, uniqueID.toString());
-            statement.setInt(2, tradeID);
+            PreparedStatement statement = IO.getConnection().prepareStatement("UPDATE offers SET TradesLeft = ?, TradesPerformed = ? WHERE Villager = ? AND ID = ?");
+            statement.setInt(1, recipe.getTradesLeft());
+            statement.setInt(2, recipe.getTradesPerformed());
+            statement.setString(3, uniqueID.toString());
+            statement.setInt(4, tradeID);
             statement.executeUpdate();
             statement.close();
             IO.getConnection().commit();
@@ -369,7 +373,7 @@ public class CustomVillager extends EntityVillager {
 
         try
         {
-            PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO offers (Villager, ID, FirstItemID, FirstItemDamage, FirstItemNBT, FirstItemAmount, SecondItemID, SecondItemDamage, SecondItemNBT, SecondItemAmount, ThirdItemID, ThirdItemDamage, ThirdItemNBT, ThirdItemAmount, Tier, TradesLeft) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO offers (Villager, ID, FirstItemID, FirstItemDamage, FirstItemNBT, FirstItemAmount, SecondItemID, SecondItemDamage, SecondItemNBT, SecondItemAmount, ThirdItemID, ThirdItemDamage, ThirdItemNBT, ThirdItemAmount, Tier, TradesLeft, TradesPerformed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)");
             for (int i = 0; i < recipes.size(); i++)
             {
                 int id = i + trades.size();
@@ -415,6 +419,7 @@ public class CustomVillager extends EntityVillager {
 
                 recipe.setTier(tier);
                 recipe.setTradesLeft(amountOfTrades);
+                recipe.setTradesPerformed(0);
 
                 trades.add(recipe);
             }

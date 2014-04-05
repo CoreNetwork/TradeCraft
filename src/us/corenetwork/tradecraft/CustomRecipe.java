@@ -14,6 +14,7 @@ public class CustomRecipe extends MerchantRecipe
     private boolean locked = false;
     private int tier = 0;
     private int tradesLeft = 0;
+    private int tradesPerformed = 0;
 
     public CustomRecipe(ItemStack itemStack, ItemStack itemStack2, ItemStack itemStack3) {
         super(itemStack, itemStack2, itemStack3);
@@ -59,6 +60,16 @@ public class CustomRecipe extends MerchantRecipe
 
     public void setTradesLeft(int tradesLeft) {
         this.tradesLeft = tradesLeft;
+    }
+
+    public int getTradesPerformed()
+    {
+        return tradesPerformed;
+    }
+
+    public void setTradesPerformed(int tradesPerformed)
+    {
+        this.tradesPerformed = tradesPerformed;
     }
 
     public CustomRecipe(NBTTagCompound nbtTagCompound) {
