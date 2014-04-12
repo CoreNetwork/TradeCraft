@@ -1,8 +1,5 @@
 package us.corenetwork.tradecraft;
 
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
+
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class IO {
 	public static YamlConfiguration config;
@@ -48,11 +48,12 @@ public class IO {
 			e.printStackTrace();
 		}
 	}
-
+	
     public static synchronized Connection getConnection() {
         if (connection == null) connection = createConnection();
         return connection;
     }
+    
     private static Connection createConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -87,8 +88,15 @@ public class IO {
         try {
             conn = IO.getConnection();//            {
             st = conn.createStatement();
-            st.executeUpdate("CREATE TABLE IF NOT EXISTS villagers (ID STRING NOT NULL, Career STRING NOT NULL)");
-            st.executeUpdate("CREATE TABLE IF NOT EXISTS offers (Villager STRING, ID INTEGER, FirstItemID INTEGER, FirstItemDamage INTEGER, FirstItemNBT BLOB, FirstItemAmount INTEGER, SecondItemID INTEGER, SecondItemDamage INTEGER, SecondItemNBT BLOB, SecondItemAmount INTEGER, ThirdItemID INTEGER, ThirdItemDamage INTEGER, ThirdItemNBT BLOB, ThirdItemAmount INTEGER, Tier INTEGER, TradesLeft INTEGER, TradesPerformed INTEGER)");
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS villagers (ID STRING PRIMARY KEY, Career STRING NOT NULL)");
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS offers ("
+            		+ "Villager STRING, "
+            		+ "ID INTEGER, "
+            		+ "FirstItemID INTEGER, FirstItemDamage INTEGER, FirstItemNBT BLOB, FirstItemAmount INTEGER, "
+            		+ "SecondItemID INTEGER, SecondItemDamage INTEGER, SecondItemNBT BLOB, SecondItemAmount INTEGER, "
+            		+ "ThirdItemID INTEGER, ThirdItemDamage INTEGER, ThirdItemNBT BLOB, ThirdItemAmount INTEGER, "
+            		+ "Tier INTEGER, TradesLeft INTEGER, TradesPerformed INTEGER"
+            		+ ")");
             conn.commit();
             st.close();
         } catch (SQLException e) {
