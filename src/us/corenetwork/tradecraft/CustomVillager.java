@@ -371,12 +371,13 @@ public class CustomVillager extends EntityVillager {
 
         Logs.debugIngame("Adding trades: " + recipes.size());
 
+        int oldTradesSize = trades.size();
         try
         {
             PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO offers (Villager, ID, FirstItemID, FirstItemDamage, FirstItemNBT, FirstItemAmount, SecondItemID, SecondItemDamage, SecondItemNBT, SecondItemAmount, ThirdItemID, ThirdItemDamage, ThirdItemNBT, ThirdItemAmount, Tier, TradesLeft, TradesPerformed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)");
             for (int i = 0; i < recipes.size(); i++)
             {
-                int id = i + trades.size();
+                int id = i + oldTradesSize;
                 CustomRecipe recipe = recipes.get(i);
 
                 statement.setString(1, uniqueID.toString());
