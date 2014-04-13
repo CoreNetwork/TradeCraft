@@ -8,6 +8,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
+import java.util.UUID;
+
 /**
  * Created by Matej on 24.2.2014.
  */

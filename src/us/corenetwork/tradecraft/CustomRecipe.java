@@ -11,16 +11,11 @@ import net.minecraft.server.v1_7_R2.NBTTagCompound;
  */
 public class CustomRecipe extends MerchantRecipe
 {
-	private int tradeID = 0; //trade id per villager
     private boolean locked = false;
     private int tier = 0;
     private int tradesLeft = 0;
     private int tradesPerformed = 0;
 
-    //Persistance helper
-    private boolean isNew = false;
-    private boolean needsSaving = false;
-    
     public CustomRecipe(ItemStack itemStack, ItemStack itemStack2, ItemStack itemStack3) {
         super(itemStack, itemStack2, itemStack3);
     }
@@ -80,46 +75,4 @@ public class CustomRecipe extends MerchantRecipe
     public CustomRecipe(NBTTagCompound nbtTagCompound) {
         super(nbtTagCompound);
     }
-    
-    public boolean shouldSave()
-    {
-    	return needsSaving;
-    }
-    
-    public boolean getIsNew()
-    {
-    	return isNew;
-    }
-    
-    public void setIsNew(boolean value)
-    {
-    	isNew = value;
-    }
-    
-    public int getTradeID()
-    {
-    	return tradeID;
-    }
-
-	public void setTradeID(int id) 
-	{
-		tradeID = id;
-	}
-	public void useTrade() 
-	{
-		setTradesLeft(this.getTradesLeft() - 1);
-		setTradesPerformed(this.getTradesPerformed() + 1);
-		needsSaving = true;
-	}
-
-	public void restock() 
-	{
-		setTradesLeft(Villagers.getDefaultNumberOfTrades());
-		needsSaving = true;
-	}
-
-	public void setShouldSave(boolean b) {
-		needsSaving = false;
-	}
-
 }
