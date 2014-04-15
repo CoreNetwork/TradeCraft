@@ -195,8 +195,8 @@ public class CustomVillager extends EntityVillager {
             Logs.severe("Player completed unknown trade on villager " + uniqueID.toString() + "! ");
             return;
         }
-
-        recipe.useTrade();
+        tradeCraftVillager.useTrade(recipe);
+        
         Logs.debugIngame("Trade completed! Left:" + recipe.getTradesLeft());
 
         if (tradeCraftVillager.areAllTiersUnlocked())
@@ -224,7 +224,6 @@ public class CustomVillager extends EntityVillager {
             	newCareer = "NO_CAREER";
     		Villagers.create(uniqueID.toString(), newCareer);
     	}
-    	
     	tradeCraftVillager = Villagers.getVillager(uniqueID.toString());
     }
 }

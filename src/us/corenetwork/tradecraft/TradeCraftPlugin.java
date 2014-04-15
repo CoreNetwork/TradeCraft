@@ -1,5 +1,6 @@
 package us.corenetwork.tradecraft;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -10,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import us.corenetwork.tradecraft.commands.BaseCommand;
 import us.corenetwork.tradecraft.commands.ReloadCommand;
 import us.corenetwork.tradecraft.commands.SaveCommand;
+import us.corenetwork.tradecraft.db.DbWorker;
 
 public class TradeCraftPlugin extends JavaPlugin {
 	public static TradeCraftPlugin instance;
@@ -30,14 +32,14 @@ public class TradeCraftPlugin extends JavaPlugin {
 		IO.LoadSettings();
         IO.PrepareDB();
         NMSVillagerManager.register();
-        
-
         Villagers.LoadVillagers();
+        
+        Thread t = new Thread(new DbWorker());
+        t.start();
 	}
 
 	@Override
 	public void onDisable() {
-		Villagers.SaveVillagers();
         IO.freeConnection();
 	}
 	

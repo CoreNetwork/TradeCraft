@@ -54,7 +54,7 @@ public class IO {
         return connection;
     }
     
-    private static Connection createConnection() {
+    public static Connection createConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection ret = DriverManager.getConnection("jdbc:sqlite:" + new File(TradeCraftPlugin.instance.getDataFolder().getPath(), "data.sqlite").getPath());

@@ -17,10 +17,6 @@ public class CustomRecipe extends MerchantRecipe
     private int tradesLeft = 0;
     private int tradesPerformed = 0;
 
-    //Persistance helper
-    private boolean isNew = false;
-    private boolean needsSaving = false;
-    
     public CustomRecipe(ItemStack itemStack, ItemStack itemStack2, ItemStack itemStack3) {
         super(itemStack, itemStack2, itemStack3);
     }
@@ -81,21 +77,6 @@ public class CustomRecipe extends MerchantRecipe
         super(nbtTagCompound);
     }
     
-    public boolean shouldSave()
-    {
-    	return needsSaving;
-    }
-    
-    public boolean getIsNew()
-    {
-    	return isNew;
-    }
-    
-    public void setIsNew(boolean value)
-    {
-    	isNew = value;
-    }
-    
     public int getTradeID()
     {
     	return tradeID;
@@ -109,17 +90,10 @@ public class CustomRecipe extends MerchantRecipe
 	{
 		setTradesLeft(this.getTradesLeft() - 1);
 		setTradesPerformed(this.getTradesPerformed() + 1);
-		needsSaving = true;
 	}
 
 	public void restock() 
 	{
 		setTradesLeft(Villagers.getDefaultNumberOfTrades());
-		needsSaving = true;
 	}
-
-	public void setShouldSave(boolean b) {
-		needsSaving = false;
-	}
-
 }
