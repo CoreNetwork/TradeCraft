@@ -7,6 +7,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+
+import us.corenetwork.tradecraft.db.DbWorker;
+import us.corenetwork.tradecraft.db.RemoveVillagerTask;
 
 /**
  * Created by Matej on 24.2.2014.
@@ -29,6 +33,16 @@ public class TradeCraftListener implements Listener {
                     }
                 });
             }
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void EntityDeathEvent(EntityDeathEvent event)
+    {
+        if (event.getEntityType() == EntityType.VILLAGER)
+        {
+            final Entity villager = event.getEntity();
+            DbWorker.queue.add(new RemoveVillagerTask(villager.getUniqueId().toString()));
         }
     }
 }
