@@ -4,12 +4,6 @@ import java.util.List;
 
 import net.minecraft.server.v1_7_R2.MerchantRecipeList;
 
-import org.bukkit.craftbukkit.v1_7_R2.util.CraftMagicNumbers;
-
-import us.corenetwork.tradecraft.db.AddOfferTask;
-import us.corenetwork.tradecraft.db.DbWorker;
-import us.corenetwork.tradecraft.db.RefreshOfferTask;
-
 /**
  * Helper class to keep needed villager data in memory. We dont keep the data in
  * CustomEntityVillager because it gets loaded/unloaded very often We will look
@@ -24,6 +18,9 @@ public class TradeCraftVillager {
 	private String career = "NOT_INITIALIZED";
 	private MerchantRecipeList trades;
 
+	private boolean isNew = false;
+	private boolean died = false;
+	
 	public TradeCraftVillager(String UUID, String career) 
 	{
 		this.UUID = UUID;
@@ -41,6 +38,16 @@ public class TradeCraftVillager {
 		return career;
 	}
 
+	public boolean getIsNew()
+	{
+		return isNew;
+	}
+	
+	public void setIsNew(boolean value)
+	{
+		isNew = value;
+	}
+	
 	public MerchantRecipeList getTrades() 
 	{
 		return trades;
@@ -49,7 +56,6 @@ public class TradeCraftVillager {
 	public void useTrade(CustomRecipe recipe) 
 	{
 		recipe.useTrade();
-		saveModifiedRecipe(recipe);
 	}
 	
 	public void refreshAllTrades() 
@@ -58,7 +64,6 @@ public class TradeCraftVillager {
 		{
 			CustomRecipe recipe = (CustomRecipe) trades.get(i);
 			recipe.restock();
-			saveModifiedRecipe(recipe);
 		}
 	}
 
@@ -94,7 +99,7 @@ public class TradeCraftVillager {
              recipe.setTradesPerformed(0);
              recipe.setTradeID(trades.size());
              addRecipe(recipe);
-             saveRecipe(recipe);
+             recipe.setIsNew(true);
          }
     }
 
@@ -103,29 +108,13 @@ public class TradeCraftVillager {
 		trades.add(recipe);
 	}
 
-	private void saveRecipe(CustomRecipe recipe)
+	public void setDead(boolean b) 
 	{
-		AddOfferTask task;
-		if(recipe.hasSecondItem())
-		{
-			task = new AddOfferTask(UUID, recipe.getTradeID(), 
-					CraftMagicNumbers.getId(recipe.getBuyItem1().getItem()), recipe.getBuyItem1().getData(), Util.getNBT(recipe.getBuyItem1()), recipe.getBuyItem1().count, 
-					CraftMagicNumbers.getId(recipe.getBuyItem2().getItem()), recipe.getBuyItem2().getData(), Util.getNBT(recipe.getBuyItem2()), recipe.getBuyItem2().count, 
-					CraftMagicNumbers.getId(recipe.getBuyItem3().getItem()), recipe.getBuyItem3().getData(), Util.getNBT(recipe.getBuyItem3()), recipe.getBuyItem3().count, 
-					recipe.getTier(), recipe.getTradesLeft(), recipe.getTradesPerformed());
-		}
-		else
-		{
-			task = new AddOfferTask(UUID, recipe.getTradeID(), 
-					CraftMagicNumbers.getId(recipe.getBuyItem1().getItem()), recipe.getBuyItem1().getData(), Util.getNBT(recipe.getBuyItem1()), recipe.getBuyItem1().count,  
-					CraftMagicNumbers.getId(recipe.getBuyItem3().getItem()), recipe.getBuyItem3().getData(), Util.getNBT(recipe.getBuyItem3()), recipe.getBuyItem3().count, 
-					recipe.getTier(), recipe.getTradesLeft(), recipe.getTradesPerformed());
-		}
-		DbWorker.queue.add(task);
+		died = true;
 	}
 	
-	private void saveModifiedRecipe(CustomRecipe recipe)
+	public boolean isDead()
 	{
-		DbWorker.queue.add(new RefreshOfferTask(UUID, recipe.getTradeID(), recipe.getTradesLeft(), recipe.getTradesPerformed()));
+		return died;
 	}
 }

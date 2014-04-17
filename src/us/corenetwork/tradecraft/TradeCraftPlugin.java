@@ -1,15 +1,15 @@
 package us.corenetwork.tradecraft;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import us.corenetwork.tradecraft.commands.BaseCommand;
 import us.corenetwork.tradecraft.commands.ReloadCommand;
 import us.corenetwork.tradecraft.commands.SaveCommand;
-import us.corenetwork.tradecraft.db.DbWorker;
-
-import java.util.HashMap;
-import java.util.Random;
 
 public class TradeCraftPlugin extends JavaPlugin {
 	public static TradeCraftPlugin instance;
@@ -34,22 +34,11 @@ public class TradeCraftPlugin extends JavaPlugin {
         NMSVillagerManager.register();
         Villagers.LoadVillagers();
 
-        dbWorkerThread = new Thread(new DbWorker());
-        dbWorkerThread.start();
 	}
 
 	@Override
 	public void onDisable() {
-        DbWorker.stopFurtherRequests();
-
-        try
-        {
-            dbWorkerThread.join();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+		Villagers.SaveVillagers();
         IO.freeConnection();
 	}
 	

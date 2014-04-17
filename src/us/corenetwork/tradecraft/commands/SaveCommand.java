@@ -15,7 +15,7 @@ public class SaveCommand  extends BaseCommand {
 
 
 	public void run(final CommandSender sender, String[] args) {
-		
-        Util.Message("Tradecraft saved! NOTHING DONE! ", sender);
+		Villagers.SaveVillagers();
+		Util.Message("Tradecraft saved!", sender);
 	}	
 }

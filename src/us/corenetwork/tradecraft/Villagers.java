@@ -6,11 +6,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import net.minecraft.server.v1_7_R2.ItemStack;
+import net.minecraft.server.v1_7_R2.MerchantRecipeList;
 
 import org.bukkit.craftbukkit.v1_7_R2.util.CraftMagicNumbers;
-
-import us.corenetwork.tradecraft.db.AddVillagerTask;
-import us.corenetwork.tradecraft.db.DbWorker;
 
 /**
  * Class for villager persistence.
@@ -39,16 +37,14 @@ public class Villagers {
     public static void create(String UUID, String career)
     {
         TradeCraftVillager tcv = new TradeCraftVillager(UUID, career);
+        tcv.setIsNew(true);
         villagers.put(UUID, tcv);
-        DbWorker.queue.add(new AddVillagerTask(UUID, career));
     }
-
-
+	
     public static TradeCraftVillager getVillager(String UUID)
     {
         return villagers.get(UUID);
     }
-
 
     public static int getDefaultNumberOfTrades()
     {
@@ -141,4 +137,208 @@ public class Villagers {
         Logs.debug("Finished loading!");
     }
 
+	/**
+	 * Saves new or modified villagers and offers to the db
+	 */
+	public static void SaveVillagers()
+	{
+		//go through all the villagers, check if they are new, save ones that are (only villies, not the offers)
+		//use batch statements, to do it faster, commit
+		saveVillagersData();
+
+		//go through all the villies and all the offers, if offer needs saving, batch, go, done, commit
+		saveOffers();
+		
+		//after everything saved cleanly, lets clear db from dead villies!
+		removeDeadVillagers();
+		
+	}
+
+	private static void saveVillagersData() 
+	{
+		try 
+		{
+			PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO villagers (ID, Career) VALUES (?,?)");
+			for(String UUID : villagers.keySet())
+			{
+				TradeCraftVillager villager = villagers.get(UUID);
+				if (villager.getIsNew())
+				{
+					villager.setIsNew(false);
+					
+					statement.setString(1, UUID);
+		            statement.setString(2, villager.getCareer());
+		            statement.addBatch();
+				}
+			}
+			
+            statement.executeBatch();
+            statement.close();
+            IO.getConnection().commit();
+            
+		} catch (SQLException e) {
+			Logs.severe("Error while saving villagers to database !");
+			e.printStackTrace();
+		}
+	}
+
+	private static void saveOffers()
+	{
+		//To simplify it all - I'll look over all offers two times. 
+		//First, I'll save new offers
+		try 
+		{
+			PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO offers (Villager, ID, "
+					+ "FirstItemID, FirstItemDamage, FirstItemNBT, FirstItemAmount, "
+					+ "SecondItemID, SecondItemDamage, SecondItemNBT, SecondItemAmount, "
+					+ "ThirdItemID, ThirdItemDamage, ThirdItemNBT, ThirdItemAmount, "
+					+ "Tier, TradesLeft, TradesPerformed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			for(String UUID : villagers.keySet())
+			{
+				TradeCraftVillager villager = villagers.get(UUID);
+				MerchantRecipeList recipes = villager.getTrades();
+				for(int i = 0; i<recipes.size();i++)
+				{
+					CustomRecipe recipe = (CustomRecipe) recipes.get(i); 
+
+					if (recipe.getIsNew() == true)
+					{
+						recipe.setIsNew(false);
+
+						statement.setString(1, UUID);
+						statement.setInt(2, recipe.getTradeID());
+
+						statement.setInt(3, CraftMagicNumbers.getId(recipe.getBuyItem1().getItem()));
+						statement.setInt(4, recipe.getBuyItem1().getData());
+
+						statement
+								.setBytes(5, Util.getNBT(recipe.getBuyItem1()));
+						statement.setInt(6, recipe.getBuyItem1().count);
+
+						if (recipe.hasSecondItem()) 
+						{
+							statement.setInt(7, CraftMagicNumbers.getId(recipe.getBuyItem2().getItem()));
+							statement.setInt(8, recipe.getBuyItem2().getData());
+							statement.setBytes(9, Util.getNBT(recipe.getBuyItem2()));
+							statement.setInt(10, recipe.getBuyItem2().count);
+						} else {
+							statement.setInt(7, 0);
+							statement.setInt(8, 0);
+							statement.setBytes(9, new byte[0]);
+							statement.setInt(10, 0);
+						}
+
+						statement.setInt(11, CraftMagicNumbers.getId(recipe.getBuyItem3().getItem()));
+						statement.setInt(12, recipe.getBuyItem3().getData());
+						statement.setBytes(13,
+								Util.getNBT(recipe.getBuyItem3()));
+						statement.setInt(14, recipe.getBuyItem3().count);
+
+						statement.setInt(15, recipe.getTier());
+						statement.setInt(16, recipe.getTradesLeft());
+						statement.setInt(17, recipe.getTradesPerformed());
+
+						statement.addBatch();
+
+
+					}
+				}
+			}
+
+            statement.executeBatch();
+            statement.close();
+            IO.getConnection().commit();
+            
+		} catch (SQLException e) {
+			Logs.severe("Error while saving new offers to database !");
+			e.printStackTrace();
+		}
+
+
+		//Second, I'll save modified offers (tradesLeft)
+		try 
+		{
+			PreparedStatement statement = IO.getConnection().prepareStatement("UPDATE offers SET TradesLeft = ?, TradesPerformed = ? WHERE Villager = ? AND ID = ?");
+			for(String UUID : villagers.keySet())
+			{
+				TradeCraftVillager villager = villagers.get(UUID);
+				MerchantRecipeList recipes = villager.getTrades();
+				for(int i = 0; i<recipes.size();i++)
+				{
+					CustomRecipe recipe = (CustomRecipe) recipes.get(i); 
+
+					if (recipe.shouldSave() == true)
+					{
+						recipe.setShouldSave(false);
+
+						statement.setInt(1, recipe.getTradesLeft());
+			            statement.setInt(2, recipe.getTradesPerformed());
+			            statement.setString(3, UUID);
+			            statement.setInt(4, recipe.getTradeID());
+
+						statement.addBatch();
+					}
+				}
+			}
+
+            statement.executeBatch();
+            statement.close();
+            IO.getConnection().commit();
+            
+		} catch (SQLException e) {
+			Logs.severe("Error while saving new offers to database !");
+			e.printStackTrace();
+		}
+	}
+
+
+	private static void removeDeadVillagers() 
+	{
+		//remove offers
+		try 
+		{
+			PreparedStatement statement = IO.getConnection().prepareStatement("DELETE FROM offers WHERE Villager = ?");
+			for(String UUID : villagers.keySet())
+			{
+				TradeCraftVillager villager = villagers.get(UUID);
+				if (villager.isDead())
+				{	
+					statement.setString(1, UUID);
+		            statement.addBatch();
+				}
+			}
+			
+            statement.executeBatch();
+            statement.close();
+            IO.getConnection().commit();
+            
+		} catch (SQLException e) {
+			Logs.severe("Error while saving villagers to database !");
+			e.printStackTrace();
+		}
+		
+		//remove villies
+		try 
+		{
+			PreparedStatement statement = IO.getConnection().prepareStatement("DELETE FROM villagers WHERE ID = ?");
+			for(String UUID : villagers.keySet())
+			{
+				TradeCraftVillager villager = villagers.get(UUID);
+				if (villager.isDead())
+				{	
+					statement.setString(1, UUID);
+		            statement.addBatch();
+				}
+			}
+			
+            statement.executeBatch();
+            statement.close();
+            IO.getConnection().commit();
+            
+		} catch (SQLException e) {
+			Logs.severe("Error while saving villagers to database !");
+			e.printStackTrace();
+		}
+
+	}
 }
