@@ -5,11 +5,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class DbWorker implements Runnable {
 
 	public static LinkedBlockingQueue<IDbTask> queue = new LinkedBlockingQueue<>();
-	private static boolean running = true;
+	private static volatile boolean running = true;
 
     public static void stopFurtherRequests()
     {
         running = false;
+        queue.add(new IDbTask()
+        {
+            @Override
+            public void perform()
+            {
+            }
+        }); //Add dummy task to stop worker thread from blocking
     }
 
 	@Override
