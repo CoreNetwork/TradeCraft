@@ -3,11 +3,13 @@ package us.corenetwork.tradecraft;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import us.corenetwork.tradecraft.commands.BaseCommand;
 import us.corenetwork.tradecraft.commands.ReloadCommand;
 import us.corenetwork.tradecraft.commands.SaveCommand;
 import us.corenetwork.tradecraft.db.DbWorker;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -32,6 +34,13 @@ public class TradeCraftPlugin extends JavaPlugin {
 		IO.LoadSettings();
         IO.PrepareDB();
         NMSVillagerManager.register();
+        
+        try {
+			IO.getConnection().commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        
         Villagers.LoadVillagers();
 
         dbWorkerThread = new Thread(new DbWorker());
@@ -41,15 +50,9 @@ public class TradeCraftPlugin extends JavaPlugin {
 	@Override
 	public void onDisable() {
         DbWorker.stopFurtherRequests();
-
-        try
-        {
-            dbWorkerThread.join();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+        
+        dbWorkerThread.interrupt();
+        
         IO.freeConnection();
 	}
 	
