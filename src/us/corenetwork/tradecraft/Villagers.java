@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import net.minecraft.server.v1_7_R2.ItemStack;
 import net.minecraft.server.v1_7_R2.MerchantRecipeList;
@@ -144,18 +145,22 @@ public class Villagers {
 	{
 		//go through all the villagers, check if they are new, save ones that are (only villies, not the offers)
 		//use batch statements, to do it faster, commit
-		saveVillagersData();
+		int savedVillies = saveVillagersData();
 
 		//go through all the villies and all the offers, if offer needs saving, batch, go, done, commit
-		saveOffers();
+		int savedOffers = saveOffers();
 		
 		//after everything saved cleanly, lets clear db from dead villies!
-		removeDeadVillagers();
+		int removedVillies = removeDeadVillagers();
 		
+		int thingsDone = savedVillies + savedOffers + removedVillies;
+
+		Logs.info("Tradecraft saved. " + thingsDone + " things saved.");
 	}
 
-	private static void saveVillagersData() 
+	private static int saveVillagersData() 
 	{
+		int counter = 0;
 		try 
 		{
 			PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO villagers (ID, Career) VALUES (?,?)");
@@ -164,6 +169,7 @@ public class Villagers {
 				TradeCraftVillager villager = villagers.get(UUID);
 				if (villager.getIsNew())
 				{
+					counter++;
 					villager.setIsNew(false);
 					
 					statement.setString(1, UUID);
@@ -180,10 +186,12 @@ public class Villagers {
 			Logs.severe("Error while saving villagers to database !");
 			e.printStackTrace();
 		}
+		return counter;
 	}
 
-	private static void saveOffers()
+	private static int saveOffers()
 	{
+		int counter = 0;
 		//To simplify it all - I'll look over all offers two times. 
 		//First, I'll save new offers
 		try 
@@ -203,8 +211,11 @@ public class Villagers {
 
 					if (recipe.getIsNew() == true)
 					{
+						counter++;
 						recipe.setIsNew(false);
-
+						recipe.setShouldSave(false);
+						
+						
 						statement.setString(1, UUID);
 						statement.setInt(2, recipe.getTradeID());
 
@@ -269,6 +280,7 @@ public class Villagers {
 
 					if (recipe.shouldSave() == true)
 					{
+						counter++;
 						recipe.setShouldSave(false);
 
 						statement.setInt(1, recipe.getTradesLeft());
@@ -289,11 +301,13 @@ public class Villagers {
 			Logs.severe("Error while saving new offers to database !");
 			e.printStackTrace();
 		}
+		return counter;
 	}
 
 
-	private static void removeDeadVillagers() 
+	private static int removeDeadVillagers() 
 	{
+		int counter = 0;
 		//remove offers
 		try 
 		{
@@ -303,6 +317,7 @@ public class Villagers {
 				TradeCraftVillager villager = villagers.get(UUID);
 				if (villager.isDead())
 				{	
+					counter++;
 					statement.setString(1, UUID);
 		            statement.addBatch();
 				}
@@ -325,7 +340,8 @@ public class Villagers {
 			{
 				TradeCraftVillager villager = villagers.get(UUID);
 				if (villager.isDead())
-				{	
+				{
+					counter++;
 					statement.setString(1, UUID);
 		            statement.addBatch();
 				}
@@ -339,6 +355,20 @@ public class Villagers {
 			Logs.severe("Error while saving villagers to database !");
 			e.printStackTrace();
 		}
-
+		
+		//remove dead villies from main collection
+		
+		Iterator<String> it = villagers.keySet().iterator();
+		
+		while(it.hasNext())
+		{
+			String val = it.next();
+			if (villagers.get(val).isDead())
+			{
+				it.remove();
+			}
+		}
+		
+		return counter;
 	}
 }

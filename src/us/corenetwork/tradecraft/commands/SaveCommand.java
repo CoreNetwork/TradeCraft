@@ -2,7 +2,6 @@ package us.corenetwork.tradecraft.commands;
 
 import org.bukkit.command.CommandSender;
 
-import us.corenetwork.tradecraft.Util;
 import us.corenetwork.tradecraft.Villagers;
 
 public class SaveCommand  extends BaseCommand {
@@ -16,6 +15,5 @@ public class SaveCommand  extends BaseCommand {
 
 	public void run(final CommandSender sender, String[] args) {
 		Villagers.SaveVillagers();
-		Util.Message("Tradecraft saved!", sender);
 	}	
 }
