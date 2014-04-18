@@ -165,7 +165,7 @@ public class Villagers {
 		int counter = 0;
 		try 
 		{
-			PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO villagers (ID, Career) VALUES (?,?)");
+			PreparedStatement statement = IO.getConnection().prepareStatement("INSERT INTO villagers (ID, Career, Alive) VALUES (?,?,1)");
 			for(String UUID : villagers.keySet())
 			{
 				TradeCraftVillager villager = villagers.get(UUID);
