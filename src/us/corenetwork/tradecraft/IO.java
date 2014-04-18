@@ -95,8 +95,8 @@ public class IO {
             		+ "FirstItemID INTEGER, FirstItemDamage INTEGER, FirstItemNBT BLOB, FirstItemAmount INTEGER, "
             		+ "SecondItemID INTEGER, SecondItemDamage INTEGER, SecondItemNBT BLOB, SecondItemAmount INTEGER, "
             		+ "ThirdItemID INTEGER, ThirdItemDamage INTEGER, ThirdItemNBT BLOB, ThirdItemAmount INTEGER, "
-            		+ "Tier INTEGER, TradesLeft INTEGER, TradesPerformed INTEGER"
-            		+ ")");
+            		+ "Tier INTEGER, TradesLeft INTEGER, TradesPerformed INTEGER,"
+            		+ "PRIMARY KEY (Villager, ID))");
             conn.commit();
             st.close();
         } catch (SQLException e) {
