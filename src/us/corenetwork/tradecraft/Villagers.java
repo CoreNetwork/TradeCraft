@@ -66,8 +66,10 @@ public class Villagers {
             {
                 String uuid = set.getString("ID");
                 String career = set.getString("Career");
-
-                villagers.put(uuid, new TradeCraftVillager(uuid, career));
+                boolean alive = set.getBoolean("Alive");
+                if(alive)
+                	villagers.put(uuid, new TradeCraftVillager(uuid, career));
+                
             }
             statement.close();
         }
@@ -308,34 +310,11 @@ public class Villagers {
 	private static int removeDeadVillagers() 
 	{
 		int counter = 0;
-		//remove offers
-		try 
-		{
-			PreparedStatement statement = IO.getConnection().prepareStatement("DELETE FROM offers WHERE Villager = ?");
-			for(String UUID : villagers.keySet())
-			{
-				TradeCraftVillager villager = villagers.get(UUID);
-				if (villager.isDead())
-				{	
-					counter++;
-					statement.setString(1, UUID);
-		            statement.addBatch();
-				}
-			}
-			
-            statement.executeBatch();
-            statement.close();
-            IO.getConnection().commit();
-            
-		} catch (SQLException e) {
-			Logs.severe("Error while saving villagers to database !");
-			e.printStackTrace();
-		}
 		
-		//remove villies
+		//mark villies as dead
 		try 
 		{
-			PreparedStatement statement = IO.getConnection().prepareStatement("DELETE FROM villagers WHERE ID = ?");
+			PreparedStatement statement = IO.getConnection().prepareStatement("UPDATE villagers SET Alive = 0 WHERE ID = ?");
 			for(String UUID : villagers.keySet())
 			{
 				TradeCraftVillager villager = villagers.get(UUID);
@@ -346,7 +325,6 @@ public class Villagers {
 		            statement.addBatch();
 				}
 			}
-			
             statement.executeBatch();
             statement.close();
             IO.getConnection().commit();
