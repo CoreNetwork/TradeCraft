@@ -88,7 +88,7 @@ public class IO {
         try {
             conn = IO.getConnection();//            {
             st = conn.createStatement();
-            st.executeUpdate("CREATE TABLE IF NOT EXISTS villagers (ID STRING PRIMARY KEY, Career STRING NOT NULL)");
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS villagers (ID STRING PRIMARY KEY, Career STRING NOT NULL, Alive BOOLEAN NOT NULL)");
             st.executeUpdate("CREATE TABLE IF NOT EXISTS offers ("
             		+ "Villager STRING, "
             		+ "ID INTEGER, "
