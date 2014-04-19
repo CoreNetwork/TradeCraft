@@ -17,6 +17,7 @@ public class TradeCraftPlugin extends JavaPlugin {
 	public static Random random;
 	
 	public static HashMap<String, BaseCommand> commands = new HashMap<String, BaseCommand>();
+	
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -25,23 +26,24 @@ public class TradeCraftPlugin extends JavaPlugin {
 		commands.put("reload", new ReloadCommand());
 		commands.put("save", new SaveCommand());
 
-        getServer().getPluginManager().registerEvents(new TradeCraftListener(), this);
-
+		getServer().getPluginManager().registerEvents(new TradeCraftListener(), this);
+		
+		IO.SaveExample();
 		IO.LoadSettings();
-        IO.PrepareDB();
-        NMSVillagerManager.register();
-        Villagers.LoadVillagers();
-
+		IO.PrepareDB();
+		
+		NMSVillagerManager.register();
+		Villagers.LoadVillagers();
 	}
 
 	@Override
 	public void onDisable() {
-        IO.freeConnection();
+		Villagers.SaveVillagers();
+		IO.freeConnection();
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String label, String[] args) {
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		BaseCommand cmd = commands.get(args[0]);
 		if (cmd != null)

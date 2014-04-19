@@ -1,8 +1,5 @@
 package us.corenetwork.tradecraft;
 
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
+
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class IO {
 	public static YamlConfiguration config;
@@ -49,6 +49,11 @@ public class IO {
 		}
 	}
 
+	public static void SaveExample()
+	{
+		TradeCraftPlugin.instance.saveResource("example.yml", false);
+	}
+	
     public static synchronized Connection getConnection() {
         if (connection == null) connection = createConnection();
         return connection;

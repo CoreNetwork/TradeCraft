@@ -1,0 +1,101 @@
+Currency: 388
+AllUnlockedRefreshChance: 0.2
+Debug: false
+Messages:
+  NoPermission: No permission!
+  ConfigurationReloaded: Configuration reloaded successfully!
+Professions:
+  '0':
+  - Farmer
+  - Fisherman
+  - Shepherd
+  - Fletcher
+  '1':
+  - Librarian
+  '2':
+  - Cleric
+  '3':
+  - Armorer
+  - Weapon Smith
+  - Tool Smith
+  '4':
+  - Butcher
+  - Leatherworker
+  '5':
+  - Green Villager
+Tiers:
+  Farmer:
+    '0':
+    - trade:
+        comment: buying wheat
+        itemA:
+          id: 296
+          amount: 18,22
+        result:
+          currency: 1
+    - trade:
+        comment: buying potatoes
+        itemA:
+          id: 392
+          amount: 15,19
+        result:
+          currency: 1
+    - trade:
+        comment: buying carrots
+        itemA:
+          id: 391
+          amount: 15,19
+        result:
+          currency: 1
+    - trade:
+        comment: selling bread
+        itemA:
+          currency: 1
+        result:
+          id: 297
+          amount: 2,4
+    '1':
+    - trade:
+        comment: buying pumpkin
+        itemA:
+          id: 86
+          amount: 8,13
+        result:
+          currency: 1
+    - trade:
+        comment: selling pumpkin pie
+        itemA:
+          currency: 1
+        result:
+          id: 400
+          amount: 2,3
+    '2':
+    - trade:
+        comment: buying melons
+        itemA:
+          id: 103
+          amount: 7,12
+        result:
+          currency: 1
+    - trade:
+        comment: selling apples
+        itemA:
+          currency: 1
+        result:
+          id: 260
+          amount: 5,7
+    '3':
+    - trade:
+        comment: selling cookies
+        itemA:
+          currency: 1
+        result:
+          id: 357
+          amount: 6,10
+    - trade:
+        comment: selling cake
+        itemA:
+          currency: 1
+        result:
+          id: 354
+          amount: 1
