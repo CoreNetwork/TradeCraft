@@ -28,9 +28,111 @@ Run through console to save the trade queue to the DB. It will be automatically 
 
 ## Configuration
 
-Refer to `example.yml` to learn how the plugin allows to edit trades.
+Refer to [`example.yml`](https://github.com/CoreNetwork/TradeCraft/blob/master/resources/example.yml) to learn how the plugin allows to edit trades.
 
 All villagers defined in config will have their trades replaced by config values.
+
+## Enchantment format
+
+### Pick
+Pick node is useful when you want to pick one of several different enchantments. It is inserted alongside other `enchant`:
+
+```
+- enchant:
+    ...
+- enchant:
+    ...
+- pick
+    ...
+```
+
+Pick is simple parent node and will pick one of the child nodes:
+```
+- pick:
+  - enchant:
+      id: 32
+      level: 1
+  - enchant:
+      id: 32
+      level: 2
+```
+
+### Pick multiple items
+
+You may also order it to pick multiple items. For example:
+
+```    
+- pick 2:
+  - enchant:
+      id: 7
+      level: 1
+      comment: thorns 1
+  - enchant:
+      id: 2
+      level: 4
+      comment: feather falling 4
+   - enchant:
+      id: 34
+      level: 3
+      comment: unbreaking 3
+  - enchant:
+      id: 0
+      level: 4
+      comment: protection 4
+```
+
+Above example will pick 2 enchantments out of 4 provided.
+
+### Pick Weights
+In above examples, all items have same chance of being picked (their weight is 1). But you can specify weight of every item to alter its chance of being picked. You add weights after number of items (which must be provided in that case).
+
+```    
+- pick:
+  - weights 10 5 3 1
+  - enchant:
+      id: 7
+      level: 1
+      comment: thorns 1
+  - enchant:
+      id: 2
+      level: 4
+      comment: feather falling 4
+   - enchant:
+      id: 34
+      level: 3
+      comment: unbreaking 3
+  - enchant:
+      id: 0
+      level: 4
+      comment: protection 4
+```
+ 
+In above example first enchant has weight 10, second 5, third 3 and fourth 1. That means first enchant is 10 times more likely to be picked as fourth and twice more likely to be picked than second.
+
+### Picking groups
+
+```    
+- pick:
+  - enchant:
+      id: 7
+      level: 1
+      comment: thorns 1
+  - enchant:
+      id: 2
+      level: 4
+      comment: feather falling 4
+   - group:
+     - enchant:
+        id: 34
+        level: 3
+        comment: unbreaking 3
+    - enchant:
+        id: 0
+        level: 4
+        comment: protection 4
+```
+
+You can create groups, so you can pick one enchant or group of multiple enchants.
 
 ## Villager Trade in 1.8
 
