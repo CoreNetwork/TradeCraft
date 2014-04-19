@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import us.corenetwork.tradecraft.commands.BaseCommand;
 import us.corenetwork.tradecraft.commands.ReloadCommand;
+import us.corenetwork.tradecraft.commands.SaveCommand;
 
 public class TradeCraftPlugin extends JavaPlugin {
 	public static TradeCraftPlugin instance;
@@ -16,19 +17,21 @@ public class TradeCraftPlugin extends JavaPlugin {
 	public static Random random;
 	
 	public static HashMap<String, BaseCommand> commands = new HashMap<String, BaseCommand>();
-	
 	@Override
 	public void onEnable() {
 		instance = this;
 		random = new Random();
 		
 		commands.put("reload", new ReloadCommand());
+		commands.put("save", new SaveCommand());
 
         getServer().getPluginManager().registerEvents(new TradeCraftListener(), this);
 
 		IO.LoadSettings();
         IO.PrepareDB();
         NMSVillagerManager.register();
+        Villagers.LoadVillagers();
+
 	}
 
 	@Override

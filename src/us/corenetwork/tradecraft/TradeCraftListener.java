@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.UUID;
 
@@ -31,6 +32,18 @@ public class TradeCraftListener implements Listener {
                     }
                 });
             }
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void EntityDeathEvent(EntityDeathEvent event)
+    {
+        if (event.getEntityType() == EntityType.VILLAGER)
+        {
+            final Entity villager = event.getEntity();
+            TradeCraftVillager tcv = Villagers.getVillager(villager.getUniqueId().toString());
+            tcv.setDead(true);
+            
         }
     }
 }

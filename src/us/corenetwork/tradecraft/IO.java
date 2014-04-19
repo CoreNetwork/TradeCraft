@@ -53,7 +53,7 @@ public class IO {
         if (connection == null) connection = createConnection();
         return connection;
     }
-    private static Connection createConnection() {
+    public static Connection createConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection ret = DriverManager.getConnection("jdbc:sqlite:" + new File(TradeCraftPlugin.instance.getDataFolder().getPath(), "data.sqlite").getPath());
@@ -87,8 +87,15 @@ public class IO {
         try {
             conn = IO.getConnection();//            {
             st = conn.createStatement();
-            st.executeUpdate("CREATE TABLE IF NOT EXISTS villagers (ID STRING NOT NULL, Career STRING NOT NULL)");
-            st.executeUpdate("CREATE TABLE IF NOT EXISTS offers (Villager STRING, ID INTEGER, FirstItemID INTEGER, FirstItemDamage INTEGER, FirstItemNBT BLOB, FirstItemAmount INTEGER, SecondItemID INTEGER, SecondItemDamage INTEGER, SecondItemNBT BLOB, SecondItemAmount INTEGER, ThirdItemID INTEGER, ThirdItemDamage INTEGER, ThirdItemNBT BLOB, ThirdItemAmount INTEGER, Tier INTEGER, TradesLeft INTEGER, TradesPerformed INTEGER)");
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS villagers (ID STRING PRIMARY KEY, Career STRING NOT NULL, Alive BOOLEAN NOT NULL)");
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS offers ("
+            		+ "Villager STRING, "
+            		+ "ID INTEGER, "
+            		+ "FirstItemID INTEGER, FirstItemDamage INTEGER, FirstItemNBT BLOB, FirstItemAmount INTEGER, "
+            		+ "SecondItemID INTEGER, SecondItemDamage INTEGER, SecondItemNBT BLOB, SecondItemAmount INTEGER, "
+            		+ "ThirdItemID INTEGER, ThirdItemDamage INTEGER, ThirdItemNBT BLOB, ThirdItemAmount INTEGER, "
+            		+ "Tier INTEGER, TradesLeft INTEGER, TradesPerformed INTEGER,"
+            		+ "PRIMARY KEY (Villager, ID))");
             conn.commit();
             st.close();
         } catch (SQLException e) {
