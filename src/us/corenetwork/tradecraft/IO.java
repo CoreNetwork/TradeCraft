@@ -56,7 +56,7 @@ public class IO {
     public static Connection createConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
-            Connection ret = DriverManager.getConnection("jdbc:sqlite:" + new File(TradeCraftPlugin.instance.getDataFolder().getPath(), "data.sqlite").getPath());
+            Connection ret = DriverManager.getConnection("jdbc:sqlite:" + new File(TradeCraftPlugin.instance.getDataFolder().getPath(), "trades.sqlite").getPath());
             ret.setAutoCommit(false);
             return ret;
         } catch (ClassNotFoundException e) {
