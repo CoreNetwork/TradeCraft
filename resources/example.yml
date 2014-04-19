@@ -1,9 +1,33 @@
+# TradeCraft
+# Custom villager tiers, trades and rebalancing
+# https://github.com/CoreNetwork/TradeCraft
+
+# This file is completely static and editing it will not affect anything in the game
+# It's purely for tutorial purposes
+
+# Currency item ID is a faster way to define prices in the tree below
+# Instead of defining the emerald ID and amount, you can just do currency: 5 
+# for 5 emeralds
 Currency: 388
+
+# A trade completed for the first time has 100% chance to restock all trades
+# Subsequent trading has only 20% chance to restock all trades.
+# Please notice that because you can complete a single trade 3-13 times (vanilla amount),
+# any of those completions has 20% chance to restock all trades. So if you manage to trade 8 times,
+# the plugin will roll a dice 8 times, and every roll has 20% chance. This value is vanilla.
+#
+# Players will still need to close the trade window for the plugin to check if it should restock trades.
 AllUnlockedRefreshChance: 0.2
 Debug: false
+
 Messages:
   NoPermission: No permission!
   ConfigurationReloaded: Configuration reloaded successfully!
+  
+# Declare profession names for specific villager types. 
+# The career name will be displayed in villager's trade window
+# You can go with vanilla career names or invent your own.
+# If you declare a career here, you have to write at least one trade for it below.
 Professions:
   '0':
   - Farmer
@@ -22,15 +46,34 @@ Professions:
   - Butcher
   - Leatherworker
   '5':
+# You can also make rare villagers by specifying weights like below
+# In this case for every 100 green villagers, 1 will be special (statistically speaking)
+  - weights 100 1
   - Green Villager
+  - Shiny Villager
 Tiers:
+# Here you declare tiers with trades for every career type you defined above
+# This particular farmer has 4 tiers.
+# Tiers can have one trade but in Minecraft 1.8 snapshots they have more than one
+# Completing any trade from the very last tier has 100% chance to unlock another tier.
+# Completely any trade from any tier but the last tier has 20% to unlock another tier.
   Farmer:
     '0':
     - trade:
+        # comment is used just for navigation and finding trades in this document fast
+        # it's not used for anything internally
         comment: buying wheat
+        # itemA is the first slot on the left
+        # you can also provide itemB
         itemA:
           id: 296
+          # amount is a range - in this case a random number between 18 and 22 (inclusive)
           amount: 18,22
+        # result is the last slot on the right
+        # buying/selling is defined by how items are arranged. 
+        # currency in the result slot usually means selling
+        # you can also provide id+amount in here, no need to use currency 
+        # (example: gravel + emerald -> flint)
         result:
           currency: 1
     - trade:
@@ -99,3 +142,68 @@ Tiers:
         result:
           id: 354
           amount: 1
+  # Following example explains enchantments
+  Shepherd:
+    '0':
+    - trade:
+        comment: selling enchanted shears
+        itemA:
+          currency: 2,3
+        result:
+          id: 359
+          amount: 1
+          # these shears will always be sold with two enchantments 
+          # you can find enchantments IDs here:
+          # http://minecraft.gamepedia.com/Enchanting#Enchantments
+          enchants:
+          - enchant:
+              id: 32
+              level: 1
+              # comments are just to describe enchants, they don't actually do anything
+              comment: efficiency 1
+          - enchant:
+              id: 34
+              level: 1
+              comment: unbreaking 1
+    - trade:
+        comment: selling awesome enchanted shears
+        itemA:
+          currency: 5,6
+        result:
+          id: 359
+          amount: 1
+          # in this case, we are randomly picking one random enchantment 
+          # from the whole list
+          enchants:
+          - pick:
+            # weights is a way to make certain choices more likely to be picked than others
+            # make sure the number of weights is equal to the number of your enchants
+            - weights 10 2 1 1 1
+            - enchant:
+                id: 32
+                level: 2
+                comment: efficiency 2
+            - enchant:
+                id: 32
+                level: 5
+                comment: efficiency 5
+            - enchant:
+                id: 34
+                level: 3
+                # this value is added to itemA.amount (or currency) - you can basically 
+                # increase the price if certain high level enchantments are picked
+                # amount is capped at 64 and bonusAmountB works too
+                bonusAmountA: 32,35
+                comment: unbreaking 3
+            # you can also provide a group of enchants. if this is picked,
+            # every enchant node will be applied to the item
+            - group:
+              - enchant:
+                  id: 32
+                  level: 4
+                  comment: efficiency 4
+              - enchant:
+                  id: 33
+                  level: 1
+                  comment: silk touch 1
+              
