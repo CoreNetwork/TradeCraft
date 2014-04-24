@@ -1,6 +1,7 @@
 package us.corenetwork.tradecraft;
 
 import net.minecraft.server.v1_7_R3.ItemStack;
+import net.minecraft.server.v1_7_R3.NBTReadLimiter;
 import net.minecraft.server.v1_7_R3.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -164,10 +165,10 @@ public class Util {
         DataInputStream dataInput = new DataInputStream(stream);
 
         try {
-            Method method = NBTTagCompound.class.getDeclaredMethod("load", DataInput.class, Integer.TYPE);
+            Method method = NBTTagCompound.class.getDeclaredMethod("load", DataInput.class, Integer.TYPE, NBTReadLimiter.class);
             method.setAccessible(true);
 
-            method.invoke(tag, dataInput, 0);
+            method.invoke(tag, dataInput, 0, NMSVillagerManager.UNLIMTED_NBT_READER_INSTANCE);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

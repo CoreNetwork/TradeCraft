@@ -82,4 +82,19 @@ public class NMSVillagerManager {
         EntityVillager nmsVillager = ((CraftVillager) villager).getHandle();
         return nmsVillager.getProfession();
     }
+
+
+    public static NBTReadLimiter UNLIMTED_NBT_READER_INSTANCE = new UnlimitedNBTLimiter();
+    private static class UnlimitedNBTLimiter extends NBTReadLimiter
+    {
+        public UnlimitedNBTLimiter()
+        {
+            super(0);
+        }
+
+        @Override
+        public void a(long l)
+        {
+        }
+    }
 }
