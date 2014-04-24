@@ -1,7 +1,7 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R2.ItemStack;
-import net.minecraft.server.v1_7_R2.NBTTagCompound;
+import net.minecraft.server.v1_7_R3.ItemStack;
+import net.minecraft.server.v1_7_R3.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

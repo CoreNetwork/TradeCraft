@@ -1,9 +1,9 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R2.*;
+import net.minecraft.server.v1_7_R3.*;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftVillager;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftVillager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
