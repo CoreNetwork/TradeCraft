@@ -51,7 +51,9 @@ public class IO {
 
 	public static void SaveExample()
 	{
-		TradeCraftPlugin.instance.saveResource("example.yml", false);
+		File file = new File(TradeCraftPlugin.instance.getDataFolder(),"example.yml");
+		if(file.exists() == false)
+			TradeCraftPlugin.instance.saveResource("example.yml", false);
 	}
 	
     public static synchronized Connection getConnection() {
