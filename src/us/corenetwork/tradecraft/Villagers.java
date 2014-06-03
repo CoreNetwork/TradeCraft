@@ -168,7 +168,7 @@ public class Villagers {
 			for(String UUID : villagers.keySet())
 			{
 				TradeCraftVillager villager = villagers.get(UUID);
-				if (villager.getIsNew())
+				if (villager.getIsNew() && villager.isDead() == false)
 				{
 					counter++;
 					villager.setIsNew(false);
@@ -210,7 +210,7 @@ public class Villagers {
 				{
 					CustomRecipe recipe = (CustomRecipe) recipes.get(i); 
 
-					if (recipe.getIsNew() == true)
+					if (recipe.getIsNew() == true && villager.isDead() == false)
 					{
 						counter++;
 						recipe.setIsNew(false);
@@ -279,7 +279,7 @@ public class Villagers {
 				{
 					CustomRecipe recipe = (CustomRecipe) recipes.get(i); 
 
-					if (recipe.shouldSave() == true)
+					if (recipe.shouldSave() == true && villager.isDead() == false)
 					{
 						counter++;
 						recipe.setShouldSave(false);
@@ -317,7 +317,7 @@ public class Villagers {
 			for(String UUID : villagers.keySet())
 			{
 				TradeCraftVillager villager = villagers.get(UUID);
-				if (villager.isDead())
+				if (villager.isDead() && villager.getIsNew() == false)
 				{
 					counter++;
 					statement.setString(1, UUID);

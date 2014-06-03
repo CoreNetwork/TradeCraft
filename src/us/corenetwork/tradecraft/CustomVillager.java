@@ -1,7 +1,9 @@
 package us.corenetwork.tradecraft;
 
 import net.minecraft.server.v1_7_R3.*;
+
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 
 /**
  * Created by Matej on 23.2.2014.
@@ -199,6 +201,15 @@ public class CustomVillager extends EntityVillager {
         }
     }
 
+    @Override
+    public void die()
+    {    
+    	super.die();
+        if (dead && tradeCraftVillager != null)
+        {
+    		tradeCraftVillager.setDead(true);
+        }
+    }
     public void loadVillagerData()
     {
     	if (Villagers.exists(uniqueID.toString()) == false)
