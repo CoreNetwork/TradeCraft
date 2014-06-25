@@ -1,9 +1,19 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R3.*;
+import net.minecraft.server.v1_7_R3.Block;
+import net.minecraft.server.v1_7_R3.EntityAgeable;
+import net.minecraft.server.v1_7_R3.EntityHuman;
+import net.minecraft.server.v1_7_R3.EntityPlayer;
+import net.minecraft.server.v1_7_R3.EntityVillager;
+import net.minecraft.server.v1_7_R3.ItemStack;
+import net.minecraft.server.v1_7_R3.MerchantRecipe;
+import net.minecraft.server.v1_7_R3.MerchantRecipeList;
+import net.minecraft.server.v1_7_R3.MobEffect;
+import net.minecraft.server.v1_7_R3.MobEffectList;
+import net.minecraft.server.v1_7_R3.Village;
+import net.minecraft.server.v1_7_R3.World;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 
 /**
  * Created by Matej on 23.2.2014.
@@ -20,33 +30,33 @@ public class CustomVillager extends EntityVillager {
 
     public CustomVillager(World world) {
         super(world);
-
-        init();
+        //init();
     }
 
     public CustomVillager(World world, int i) {
         super(world, i);
 
-       init();
+       //init();
     }
 
-    private void init()
-    {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(TradeCraftPlugin.instance, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                loadVillagerData();
-
-                if (tradeCraftVillager.getTrades().size() == 0)
-                {
-                	tradeCraftVillager.addTier(0);
-                }
-            }
-        });
-    }
-
+//Off for now. 
+//    private void init()
+//    {
+//        Bukkit.getScheduler().scheduleSyncDelayedTask(TradeCraftPlugin.instance, new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                loadVillagerData();
+//
+//                if (tradeCraftVillager.getTrades().size() == 0)
+//                {
+//                	tradeCraftVillager.addTier(0);
+//                }
+//            }
+//        });
+//    }
+//
     @Override
     public EntityAgeable createChild(EntityAgeable entityAgeable) {
         return b(entityAgeable);
@@ -125,6 +135,17 @@ public class CustomVillager extends EntityVillager {
     @Override
     public boolean a(EntityHuman entityHuman)
     {
+
+        
+        if(tradeCraftVillager == null)
+        {
+	        loadVillagerData();
+	        if (tradeCraftVillager.getTrades().size() == 0)
+	        {
+	        	tradeCraftVillager.addTier(0);
+	        }
+        }
+        
         overrideName = true;
         boolean returningBool = super.a(entityHuman);
         overrideName = false;
@@ -205,9 +226,16 @@ public class CustomVillager extends EntityVillager {
     public void die()
     {    
     	super.die();
-        if (dead && tradeCraftVillager != null)
+        if (dead)
         {
-    		tradeCraftVillager.setDead(true);
+        	if (tradeCraftVillager != null)
+        	{
+        		tradeCraftVillager.setDead(true);
+        	}
+        	else
+        	{
+        		Logs.debug("Dead without object " + this.uniqueID.toString());
+        	}
         }
     }
     public void loadVillagerData()
@@ -218,6 +246,7 @@ public class CustomVillager extends EntityVillager {
             if (newCareer == null)
             	newCareer = "NO_CAREER";
     		Villagers.create(uniqueID.toString(), newCareer);
+    		Logs.debug(this.world.getWorldData().getName() + " " + this.locX + " " + this.locY + " " + this.locZ);
     	}
     	tradeCraftVillager = Villagers.getVillager(uniqueID.toString());
     }

@@ -157,6 +157,7 @@ public class Villagers {
 		int thingsDone = savedVillies + savedOffers + removedVillies;
 
 		Logs.info("Tradecraft saved. " + thingsDone + " things saved.");
+		Logs.debug("Saved villagers: " + savedVillies + "  Saved offers: " + savedOffers + "  Removed villies: " + removedVillies);
 	}
 
 	private static int saveVillagersData() 
