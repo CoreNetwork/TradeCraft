@@ -8,8 +8,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-
-import java.util.UUID;
+import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.entity.EntityPortalExitEvent;
 
 /**
  * Created by Matej on 24.2.2014.
@@ -42,8 +42,44 @@ public class TradeCraftListener implements Listener {
         {
             final Entity villager = event.getEntity();
             TradeCraftVillager tcv = Villagers.getVillager(villager.getUniqueId().toString());
-            tcv.setDead(true);
-            
+            if(tcv != null)
+            {
+            	tcv.setDead(true);
+            }
         }
     }
+    
+
+    
+    
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void EntityPortalEvent(EntityPortalEvent  event)
+    {
+    	if (event.getEntityType() == EntityType.VILLAGER)
+        {
+            final Entity villager = event.getEntity();
+            TradeCraftVillager tcv = Villagers.getVillager(villager.getUniqueId().toString());
+            if(tcv != null)
+            {
+            	Logs.debug("Portal enter " + tcv.getUUID());
+            	tcv.setPortaling(true);
+            }
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void EntityPortalExitEvent(EntityPortalExitEvent  event)
+    {
+    	if (event.getEntityType() == EntityType.VILLAGER)
+        {
+            final Entity villager = event.getEntity();
+            TradeCraftVillager tcv = Villagers.getVillager(villager.getUniqueId().toString());
+            if(tcv != null)
+            {
+            	Logs.debug("portal exit " + tcv.getUUID());
+            	tcv.setPortaling(false);
+            }
+        }
+    }
+    
 }

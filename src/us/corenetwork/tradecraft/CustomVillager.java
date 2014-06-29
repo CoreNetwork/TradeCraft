@@ -30,33 +30,13 @@ public class CustomVillager extends EntityVillager {
 
     public CustomVillager(World world) {
         super(world);
-        //init();
+        Logs.debug("Spawned! " + this.getUniqueID().toString() +"  "+ this.world.worldData.getName()+"  " + this.locX+"  " + this.locY+"  " + this.locZ);
     }
 
     public CustomVillager(World world, int i) {
         super(world, i);
-
-       //init();
     }
 
-//Off for now. 
-//    private void init()
-//    {
-//        Bukkit.getScheduler().scheduleSyncDelayedTask(TradeCraftPlugin.instance, new Runnable()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                loadVillagerData();
-//
-//                if (tradeCraftVillager.getTrades().size() == 0)
-//                {
-//                	tradeCraftVillager.addTier(0);
-//                }
-//            }
-//        });
-//    }
-//
     @Override
     public EntityAgeable createChild(EntityAgeable entityAgeable) {
         return b(entityAgeable);
@@ -122,7 +102,7 @@ public class CustomVillager extends EntityVillager {
             createNewTier = false;
         }
         else
-            Logs.debugIngame("Trading with: " + tradeCraftVillager.getCareer());
+            Logs.debugIngame("Trading with: " + tradeCraftVillager.getCareer() + " " + this.getUniqueID().toString());
 
         super.a_(entityHuman);
     }
@@ -230,7 +210,10 @@ public class CustomVillager extends EntityVillager {
         {
         	if (tradeCraftVillager != null)
         	{
-        		tradeCraftVillager.setDead(true);
+        		if(tradeCraftVillager.isPortaling() == false)
+        		{
+        			tradeCraftVillager.setDead(true);
+        		}
         	}
         	else
         	{

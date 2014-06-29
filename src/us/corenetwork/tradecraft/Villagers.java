@@ -144,6 +144,9 @@ public class Villagers {
 	 */
 	public static void SaveVillagers()
 	{
+		//Remove all villagers marked as dead
+		int removedVillagers = removeDead();
+		
 		//go through all the villagers, check if they are new, save ones that are (only villies, not the offers)
 		//use batch statements, to do it faster, commit
 		int savedVillies = saveVillagersData();
@@ -151,15 +154,40 @@ public class Villagers {
 		//go through all the villies and all the offers, if offer needs saving, batch, go, done, commit
 		int savedOffers = saveOffers();
 		
-		//after everything saved cleanly, lets clear db from dead villies!
-		int removedVillies = removeDeadVillagers();
+		//after everything saved cleanly, lets mark dead as dead
+		int markedAsDead = markVillagersAsDead();
 		
-		int thingsDone = savedVillies + savedOffers + removedVillies;
+		int thingsDone = removedVillagers + savedVillies + savedOffers + markedAsDead;
 
 		Logs.info("Tradecraft saved. " + thingsDone + " things saved.");
-		Logs.debug("Saved villagers: " + savedVillies + "  Saved offers: " + savedOffers + "  Removed villies: " + removedVillies);
+		Logs.debug("Removed dead: " + removedVillagers + " Saved villagers: " + savedVillies + "  Saved offers: " + savedOffers + "  Marked as dead: " + markedAsDead);
 	}
 
+	private static int removeDead()
+	{
+		int counter = 0;
+		
+		//search for dead villies, delete their offers, and then delete them
+		try 
+		{
+			PreparedStatement statement = IO.getConnection().prepareStatement("delete from offers where offers.villager in (select villagers.ID from villagers where villagers.alive = 0)");
+			counter += statement.executeUpdate();
+            statement.close();
+            
+            statement = IO.getConnection().prepareStatement("delete from villagers where villagers.alive = 0");
+            counter += statement.executeUpdate();
+            statement.close();
+            
+            IO.getConnection().commit();
+            
+		} catch (SQLException e) {
+			Logs.severe("Error while deleting villagers + offers from the database !");
+			e.printStackTrace();
+		}
+
+		return counter;
+	}
+	
 	private static int saveVillagersData() 
 	{
 		int counter = 0;
@@ -307,7 +335,7 @@ public class Villagers {
 	}
 
 
-	private static int removeDeadVillagers() 
+	private static int markVillagersAsDead() 
 	{
 		int counter = 0;
 		

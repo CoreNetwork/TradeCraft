@@ -20,6 +20,7 @@ public class TradeCraftVillager {
 
 	private boolean isNew = false;
 	private boolean died = false;
+	private boolean portaling = false;
 	
 	public TradeCraftVillager(String UUID, String career) 
 	{
@@ -116,5 +117,15 @@ public class TradeCraftVillager {
 	public boolean isDead()
 	{
 		return died;
+	}
+
+	public void setPortaling(boolean value)
+	{
+		portaling = value;
+	}
+
+	public boolean isPortaling()
+	{
+		return portaling;
 	}
 }
