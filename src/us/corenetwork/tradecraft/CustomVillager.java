@@ -37,6 +37,15 @@ public class CustomVillager extends EntityVillager {
         super(world, i);
     }
 
+    private void init()
+    {
+        loadVillagerData();
+        if (tradeCraftVillager.getTrades().size() == 0)
+        {
+        	tradeCraftVillager.addTier(0);
+        }
+    }
+    
     @Override
     public EntityAgeable createChild(EntityAgeable entityAgeable) {
         return b(entityAgeable);
@@ -48,6 +57,10 @@ public class CustomVillager extends EntityVillager {
      */
     @Override
     public MerchantRecipeList getOffers(EntityHuman entityHuman) {
+    	
+    	if(tradeCraftVillager == null)
+    		init();
+    	
     	MerchantRecipeList trades = tradeCraftVillager.getTrades();
         if (trades == null || trades.size() == 0)
         {
@@ -115,17 +128,9 @@ public class CustomVillager extends EntityVillager {
     @Override
     public boolean a(EntityHuman entityHuman)
     {
-
-        
-        if(tradeCraftVillager == null)
-        {
-	        loadVillagerData();
-	        if (tradeCraftVillager.getTrades().size() == 0)
-	        {
-	        	tradeCraftVillager.addTier(0);
-	        }
-        }
-        
+    	if(tradeCraftVillager == null)
+    		init();
+    	
         overrideName = true;
         boolean returningBool = super.a(entityHuman);
         overrideName = false;
