@@ -1,8 +1,8 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R3.MerchantRecipeList;
-
 import java.util.List;
+
+import net.minecraft.server.v1_7_R4.MerchantRecipeList;
 
 /**
  * Helper class to keep needed villager data in memory. We dont keep the data in

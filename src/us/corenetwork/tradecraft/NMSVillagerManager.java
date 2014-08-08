@@ -1,16 +1,22 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R3.*;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.server.v1_7_R4.BiomeBase;
+import net.minecraft.server.v1_7_R4.BiomeMeta;
+import net.minecraft.server.v1_7_R4.EntityTypes;
+import net.minecraft.server.v1_7_R4.EntityVillager;
+import net.minecraft.server.v1_7_R4.NBTReadLimiter;
+import net.minecraft.server.v1_7_R4.World;
+
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftVillager;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftVillager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Matej on 23.2.2014.

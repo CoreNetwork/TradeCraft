@@ -1,17 +1,17 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R3.Block;
-import net.minecraft.server.v1_7_R3.EntityAgeable;
-import net.minecraft.server.v1_7_R3.EntityHuman;
-import net.minecraft.server.v1_7_R3.EntityPlayer;
-import net.minecraft.server.v1_7_R3.EntityVillager;
-import net.minecraft.server.v1_7_R3.ItemStack;
-import net.minecraft.server.v1_7_R3.MerchantRecipe;
-import net.minecraft.server.v1_7_R3.MerchantRecipeList;
-import net.minecraft.server.v1_7_R3.MobEffect;
-import net.minecraft.server.v1_7_R3.MobEffectList;
-import net.minecraft.server.v1_7_R3.Village;
-import net.minecraft.server.v1_7_R3.World;
+import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.EntityAgeable;
+import net.minecraft.server.v1_7_R4.EntityHuman;
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+import net.minecraft.server.v1_7_R4.EntityVillager;
+import net.minecraft.server.v1_7_R4.ItemStack;
+import net.minecraft.server.v1_7_R4.MerchantRecipe;
+import net.minecraft.server.v1_7_R4.MerchantRecipeList;
+import net.minecraft.server.v1_7_R4.MobEffect;
+import net.minecraft.server.v1_7_R4.MobEffectList;
+import net.minecraft.server.v1_7_R4.Village;
+import net.minecraft.server.v1_7_R4.World;
 
 import org.bukkit.Bukkit;
 
@@ -66,7 +66,7 @@ public class CustomVillager extends EntityVillager {
         {
             Logs.severe("Villager " + uniqueID.toString() + " has no trades!");
 
-            CustomRecipe recipe = new CustomRecipe(new ItemStack((Block) Block.REGISTRY.a("bedrock"), 65), new ItemStack((Block) Block.REGISTRY.a("bedrock"), 1));
+            CustomRecipe recipe = new CustomRecipe(new ItemStack((Block) Block.REGISTRY.get("bedrock"), 65), new ItemStack((Block) Block.REGISTRY.get("bedrock"), 1));
             //recipe.lockManually();
 
             MerchantRecipeList list = new MerchantRecipeList();
@@ -157,7 +157,7 @@ public class CustomVillager extends EntityVillager {
     	String suuid = uniqueID.toString();
     	
         // Yes/No sound
-        this.makeSound("mob.villager.yes", this.be(), this.bf());
+    	this.makeSound("mob.villager.yes", this.bf(), this.bg());
 
         //Refrehs inventory
         EntityHuman human = b();

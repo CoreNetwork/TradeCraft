@@ -1,14 +1,15 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R3.ItemStack;
-import net.minecraft.server.v1_7_R3.MerchantRecipeList;
-import org.bukkit.craftbukkit.v1_7_R3.util.CraftMagicNumbers;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import net.minecraft.server.v1_7_R4.ItemStack;
+import net.minecraft.server.v1_7_R4.MerchantRecipeList;
+
+import org.bukkit.craftbukkit.v1_7_R4.util.CraftMagicNumbers;
 
 /**
  * Class for villager persistence.

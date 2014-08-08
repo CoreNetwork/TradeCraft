@@ -1,11 +1,11 @@
 package us.corenetwork.tradecraft;
 
-import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.inventory.ItemStack;
 
 
 /**

@@ -1,10 +1,10 @@
 package us.corenetwork.tradecraft;
 
 
-import net.minecraft.server.v1_7_R3.Item;
-import net.minecraft.server.v1_7_R3.ItemStack;
-import net.minecraft.server.v1_7_R3.MerchantRecipe;
-import net.minecraft.server.v1_7_R3.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_7_R4.ItemStack;
+import net.minecraft.server.v1_7_R4.MerchantRecipe;
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
 
 /**
  * Created by Matej on 5.3.2014.
