@@ -4,7 +4,7 @@ TradeCraft
 Custom villager tiers, trades and rebalancing.
 
 [CraftBukkit plugin](http://bukkit.org/)  
-Supported version: 1.7.5
+Supported version: 1.7.10
 
 
 ## Download
