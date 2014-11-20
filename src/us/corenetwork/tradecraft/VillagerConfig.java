@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
@@ -104,11 +105,36 @@ public class VillagerConfig {
 
         ItemStack stack = new ItemStack(id, amount, data.shortValue());
 
+        Object yamlNbtTag = map.get("NBT");
+        if (yamlNbtTag != null)
+        {
+            NBTTagCompound newTag;
+            if (yamlNbtTag instanceof String)
+            {
+                newTag = NanobotLoader.load((String) yamlNbtTag);
+                if (newTag == null)
+                {
+                    Logs.warning("Invalid config! Nanobot file " + ((String) yamlNbtTag) + ".yml is missing!");
+                }
+            }
+            else
+            {
+                newTag = NanobotLoader.load((Map<?,?>) yamlNbtTag);
+            }
+
+            if (newTag != null)
+            {
+                net.minecraft.server.v1_7_R4.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+                nmsStack.tag = newTag;
+                stack = CraftItemStack.asCraftMirror(nmsStack);
+            }
+        }
+
+
         List<Map<String,?>> enchants = (List<Map<String,?>>) map.get("enchants");
         if (enchants != null)
         {
             new EnchantParser(stack, itemA, itemB).parse(enchants);
-
         }
 
 
