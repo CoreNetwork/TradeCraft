@@ -1,18 +1,17 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.EntityAgeable;
-import net.minecraft.server.v1_7_R4.EntityHuman;
-import net.minecraft.server.v1_7_R4.EntityPlayer;
-import net.minecraft.server.v1_7_R4.EntityVillager;
-import net.minecraft.server.v1_7_R4.ItemStack;
-import net.minecraft.server.v1_7_R4.MerchantRecipe;
-import net.minecraft.server.v1_7_R4.MerchantRecipeList;
-import net.minecraft.server.v1_7_R4.MobEffect;
-import net.minecraft.server.v1_7_R4.MobEffectList;
-import net.minecraft.server.v1_7_R4.Village;
-import net.minecraft.server.v1_7_R4.World;
-
+import net.minecraft.server.v1_8_R1.Block;
+import net.minecraft.server.v1_8_R1.EntityAgeable;
+import net.minecraft.server.v1_8_R1.EntityHuman;
+import net.minecraft.server.v1_8_R1.EntityPlayer;
+import net.minecraft.server.v1_8_R1.EntityVillager;
+import net.minecraft.server.v1_8_R1.ItemStack;
+import net.minecraft.server.v1_8_R1.MerchantRecipe;
+import net.minecraft.server.v1_8_R1.MerchantRecipeList;
+import net.minecraft.server.v1_8_R1.MobEffect;
+import net.minecraft.server.v1_8_R1.MobEffectList;
+import net.minecraft.server.v1_8_R1.Village;
+import net.minecraft.server.v1_8_R1.World;
 import org.bukkit.Bukkit;
 
 /**
@@ -160,7 +159,7 @@ public class CustomVillager extends EntityVillager {
     	this.makeSound("mob.villager.yes", this.bf(), this.bg());
 
         //Refrehs inventory
-        EntityHuman human = b();
+        EntityHuman human = u_();
         if (human != null && human instanceof EntityPlayer)
         {
             final org.bukkit.entity.Player player = ((EntityPlayer) human).getBukkitEntity();
@@ -180,7 +179,7 @@ public class CustomVillager extends EntityVillager {
         CustomRecipe recipe = (CustomRecipe) vanillaRecipe;
         if (tradeCraftVillager.getTrades() == null)
             return;
-
+        
         int tradeID = tradeCraftVillager.getTrades().indexOf(recipe);
         if (tradeID < 0)
         {

@@ -5,11 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import net.minecraft.server.v1_7_R4.ItemStack;
-import net.minecraft.server.v1_7_R4.MerchantRecipeList;
-
-import org.bukkit.craftbukkit.v1_7_R4.util.CraftMagicNumbers;
+import net.minecraft.server.v1_8_R1.ItemStack;
+import net.minecraft.server.v1_8_R1.MerchantRecipeList;
+import org.bukkit.craftbukkit.v1_8_R1.util.CraftMagicNumbers;
 
 /**
  * Class for villager persistence.

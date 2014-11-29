@@ -1,10 +1,10 @@
 package us.corenetwork.tradecraft;
 
 
-import net.minecraft.server.v1_7_R4.Item;
-import net.minecraft.server.v1_7_R4.ItemStack;
-import net.minecraft.server.v1_7_R4.MerchantRecipe;
-import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_8_R1.Item;
+import net.minecraft.server.v1_8_R1.ItemStack;
+import net.minecraft.server.v1_8_R1.MerchantRecipe;
+import net.minecraft.server.v1_8_R1.NBTTagCompound;
 
 /**
  * Created by Matej on 5.3.2014.
@@ -35,8 +35,10 @@ public class CustomRecipe extends MerchantRecipe
 	/**
 	 * Returns if trade is locked (cannot be traded)
 	 */
+	
+
 	@Override
-	public boolean g() {
+	public boolean h() {
 		return locked || tradesLeft <= 0;
 	}
 

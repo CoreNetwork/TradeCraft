@@ -3,9 +3,8 @@ package us.corenetwork.tradecraft;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import net.minecraft.server.v1_7_R4.NBTTagCompound;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import net.minecraft.server.v1_8_R1.NBTTagCompound;
+import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 
@@ -124,8 +123,8 @@ public class VillagerConfig {
 
             if (newTag != null)
             {
-                net.minecraft.server.v1_7_R4.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
-                nmsStack.tag = newTag;
+                net.minecraft.server.v1_8_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+                nmsStack.setTag(newTag);
                 stack = CraftItemStack.asCraftMirror(nmsStack);
             }
         }
