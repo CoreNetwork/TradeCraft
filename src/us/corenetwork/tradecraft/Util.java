@@ -8,6 +8,7 @@ import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import net.minecraft.server.v1_8_R1.ItemStack;
 import net.minecraft.server.v1_8_R1.NBTReadLimiter;
 import net.minecraft.server.v1_8_R1.NBTTagCompound;
@@ -136,6 +137,17 @@ public class Util {
             if (Util.hasPermission(p,permission))
                 Message(message, p);
         }
+    }
+
+    public static Object findEnum(Object[] enumList, String name)
+    {
+        for (Object enumEntry : enumList)
+        {
+            if (((Enum) enumEntry).name().equalsIgnoreCase(name))
+                return enumEntry;
+        }
+
+        return null;
     }
 
     public static byte[] getNBT(ItemStack stack)

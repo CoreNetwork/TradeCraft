@@ -1,5 +1,6 @@
 package us.corenetwork.tradecraft;
 
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +36,20 @@ public class EnchantParser extends NodeParser
     {
         if (type.equals("enchant"))
         {
-            Number enchantID = (Number) node.get("id");
+            Integer enchantID = null;
+            int level = -1;
+
+            for (Map.Entry<?, ?> entry : node.entrySet())
+            {
+                String key = (String) entry.getKey();
+                enchantID = MinecraftNames.getEnchantmentId(key);
+                if (enchantID != null)
+                {
+                    level = VillagerConfig.getRandomNumber(entry.getValue());
+                    break;
+                }
+            }
+
             if (enchantID == null)
             {
                 Logs.warning("Invalid trades config: Missing enchant ID!");
@@ -49,11 +63,14 @@ public class EnchantParser extends NodeParser
 
             }
 
-            int enchantLevel = VillagerConfig.getRandomNumber(node.get("level"));
-            if (enchantLevel == 0)
+            if (level < 0)
             {
-                Logs.warning("Invalid trades config: Missing or invalid enchant level!");
-                return;
+                int enchantLevel = VillagerConfig.getRandomNumber(node.get("level"));
+                if (enchantLevel == 0)
+                {
+                    Logs.warning("Invalid trades config: Missing or invalid enchant level!");
+                    return;
+                }
             }
 
             Object bonusA = node.get("bonusAmountA");
@@ -73,11 +90,11 @@ public class EnchantParser extends NodeParser
             if (enchantedItem.getType() == Material.ENCHANTED_BOOK)
             {
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) enchantedItem.getItemMeta();
-                meta.addStoredEnchant(enchantment, enchantLevel, true);
+                meta.addStoredEnchant(enchantment, level, true);
                 enchantedItem.setItemMeta(meta);
             }
             else
-                enchantedItem.addUnsafeEnchantment(enchantment, enchantLevel);
+                enchantedItem.addUnsafeEnchantment(enchantment, level);
         }
     }
 }

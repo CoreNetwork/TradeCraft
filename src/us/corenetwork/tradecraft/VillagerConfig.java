@@ -3,9 +3,15 @@ package us.corenetwork.tradecraft;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
 import net.minecraft.server.v1_8_R1.NBTTagCompound;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 
 
 /**
@@ -78,27 +84,69 @@ public class VillagerConfig {
     private static ItemStack getItemStack(Map<?,?> map, ItemStack itemA, ItemStack itemB)
     {
         int id;
-        int amount;
+        int amount = 0;
+        Integer data = 0;
+
         if (map.containsKey("currency"))
         {
             id = Settings.getInt(Setting.CURRENCY);
             amount = getRandomNumber(map.get("currency"));
+        } else if (map.containsKey("item"))
+        {
+            String item = (String) map.get("item");
+            String damageString = null;
+
+            if (item.contains(","))
+            {
+                String[] split = item.split(",");
+                item = split[0];
+                damageString = split[1];
+            }
+
+            Integer idFromName = MinecraftNames.getMaterialId((String) item);
+            if (idFromName == null)
+            {
+                Logs.warning("Invalid trades config: Unknown item name:" + item + "!");
+                return null;
+            }
+            id = idFromName;
+
+            data = getDamageValue(id, damageString);
+            amount = getRandomNumber(map.get("amount"));
+        }
+        else if (map.containsKey("name"))
+        {
+            Object name = map.get("name");
+            if (!(name instanceof String))
+            {
+                Logs.warning("Invalid trades config: Invalid item name!");
+                return null;
+            }
+
+            Integer idFromName = MinecraftNames.getMaterialId((String) name);
+            if (idFromName == null)
+            {
+                Logs.warning("Invalid trades config: Unknown item name:" + name + "!");
+                return null;
+            }
+
+            id = idFromName;
+            amount = getRandomNumber(map.get("amount"));
         }
         else
         {
             Object idO = map.get("id");
-            if (idO == null || !(idO instanceof Integer))
+            if (idO == null || !(idO instanceof String))
             {
                 Logs.warning("Invalid trades config: Missing or invalid item ID!");
                 return null;
             }
-
-            id = ((Integer) idO).intValue();
+            else
+                id = ((Integer) idO).intValue();
 
             amount = getRandomNumber(map.get("amount"));
         }
 
-        Integer data = 0;
         if (map.containsKey("data"))
             data = (Integer) map.get("data");
 
@@ -138,6 +186,35 @@ public class VillagerConfig {
 
 
         return stack;
+    }
+
+    private static int getDamageValue(int itemID, Object value)
+    {
+        if (value == null)
+            return 0;
+        else if (value instanceof Integer)
+            return (Integer) value;
+        else if (value instanceof String)
+        {
+            if (itemID == Material.WOOL.getId() || itemID == Material.INK_SACK.getId() || itemID == Material.STAINED_GLASS.getId() || itemID == Material.STAINED_GLASS_PANE.getId() || itemID == Material.CARPET.getId())
+            {
+                DyeColor color = (DyeColor) Util.findEnum(DyeColor.values(), (String) value);
+                if (color == null)
+                {
+                    Logs.warning("Invalid damage config in name: node! " + value + " is not a color!");
+                    return 0;
+                }
+
+                if (itemID == Material.INK_SACK.getId())
+                    return color.getDyeData(); //Dyes have different color values
+
+                return color.getWoolData();
+            }
+        }
+
+        Logs.warning("Invalid damage config in name: node!");
+        return 0;
+
     }
 
     public static int getRandomNumber(Object node)
