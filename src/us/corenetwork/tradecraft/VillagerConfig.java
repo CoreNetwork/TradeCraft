@@ -89,7 +89,14 @@ public class VillagerConfig {
 
         if (map.containsKey("currency"))
         {
-            id = Settings.getInt(Setting.CURRENCY);
+        	String currencyName = Settings.getString(Setting.CURRENCY);
+        	Integer idFromName = MinecraftNames.getMaterialId(currencyName);
+            if (idFromName == null)
+            {
+                Logs.warning("Invalid trades config: Unknown currency item name:" + currencyName + "!");
+                return null;
+            }
+            id = idFromName;
             amount = getRandomNumber(map.get("currency"));
         } else if (map.containsKey("item"))
         {

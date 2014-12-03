@@ -3,7 +3,7 @@ package us.corenetwork.tradecraft;
 
 public enum Setting {	
 
-    CURRENCY("Currency", 388),
+    CURRENCY("Currency", "emerald"),
     ALL_UNLOCKED_REFRESH_CHANCE("AllUnlockedRefreshChance", 0.2),
 
 	DEBUG("Debug", false),

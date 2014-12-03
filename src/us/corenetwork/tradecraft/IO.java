@@ -106,7 +106,7 @@ public class IO {
             conn.commit();
             st.close();
         } catch (SQLException e) {
-            TradeCraftPlugin.instance.getLogger().log(Level.SEVERE, "[Mantle]: Error while creating tables! - " + e.getMessage());
+            Logs.severe("Error while creating tables! - " + e.getMessage());
             e.printStackTrace();
         }
     }

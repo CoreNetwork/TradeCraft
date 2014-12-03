@@ -10,7 +10,7 @@ public class Settings {
 		Object property = IO.config.get(setting.getString());
 		if (property == null)
 		{
-			TradeCraftPlugin.instance.getLogger().warning("[FlatcoreWeekly] Configuration entry missing: " + setting.getString());
+			Logs.warning("Configuration entry missing: " + setting.getString());
 			property = setting.getDefault();
 		}
 		
