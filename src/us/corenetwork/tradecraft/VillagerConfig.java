@@ -196,6 +196,9 @@ public class VillagerConfig {
             return (Integer) value;
         else if (value instanceof String)
         {
+            if (Util.isInteger((String) value))
+                return Integer.parseInt((String) value);
+
             if (itemID == Material.WOOL.getId() || itemID == Material.INK_SACK.getId() || itemID == Material.STAINED_GLASS.getId() || itemID == Material.STAINED_GLASS_PANE.getId() || itemID == Material.CARPET.getId())
             {
                 DyeColor color = (DyeColor) Util.findEnum(DyeColor.values(), (String) value);
