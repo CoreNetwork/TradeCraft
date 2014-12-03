@@ -8,7 +8,7 @@
 # Currency item ID is a faster way to define prices in the tree below
 # Instead of defining the emerald ID and amount, you can just do currency: 5 
 # for 5 emeralds
-Currency: 388
+Currency: emerald
 
 # A trade completed for the first time has 100% chance to restock all trades
 # Subsequent trading has only 20% chance to restock all trades.
@@ -23,7 +23,7 @@ Debug: false
 Messages:
   NoPermission: No permission!
   ConfigurationReloaded: Configuration reloaded successfully!
-  
+
 # Declare profession names for specific villager types. 
 # The career name will be displayed in villager's trade window
 # You can go with vanilla career names or invent your own.
@@ -66,7 +66,7 @@ Tiers:
         # itemA is the first slot on the left
         # you can also provide itemB
         itemA:
-          id: 296
+          item: wheat
           # amount is a range - in this case a random number between 18 and 22 (inclusive)
           amount: 18,22
         # result is the last slot on the right
@@ -79,14 +79,14 @@ Tiers:
     - trade:
         comment: buying potatoes
         itemA:
-          id: 392
+          item: potato
           amount: 15,19
         result:
           currency: 1
     - trade:
         comment: buying carrots
         itemA:
-          id: 391
+          item: carrot
           amount: 15,19
         result:
           currency: 1
@@ -95,13 +95,13 @@ Tiers:
         itemA:
           currency: 1
         result:
-          id: 297
+          item: bread
           amount: 2,4
     '1':
     - trade:
         comment: buying pumpkin
         itemA:
-          id: 86
+          item: pumpkin
           amount: 8,13
         result:
           currency: 1
@@ -110,13 +110,13 @@ Tiers:
         itemA:
           currency: 1
         result:
-          id: 400
+          item: pumpkin_pie
           amount: 2,3
     '2':
     - trade:
         comment: buying melons
         itemA:
-          id: 103
+          item: melon_block
           amount: 7,12
         result:
           currency: 1
@@ -125,7 +125,7 @@ Tiers:
         itemA:
           currency: 1
         result:
-          id: 260
+          item: apple
           amount: 5,7
     '3':
     - trade:
@@ -133,14 +133,14 @@ Tiers:
         itemA:
           currency: 1
         result:
-          id: 357
+          item: cookie
           amount: 6,10
     - trade:
         comment: selling cake
         itemA:
           currency: 1
         result:
-          id: 354
+          item: cake
           amount: 1
   # Following example explains enchantments
   Shepherd:
@@ -150,27 +150,23 @@ Tiers:
         itemA:
           currency: 2,3
         result:
-          id: 359
+          item: shears
           amount: 1
           # these shears will always be sold with two enchantments 
           # you can find enchantments IDs here:
           # http://minecraft.gamepedia.com/Enchanting#Enchantments
           enchants:
           - enchant:
-              id: 32
-              level: 1
+              efficiency: 1
               # comments are just to describe enchants, they don't actually do anything
-              comment: efficiency 1
           - enchant:
-              id: 34
-              level: 1
-              comment: unbreaking 1
+              unbreaking: 1
     - trade:
         comment: selling awesome enchanted shears
         itemA:
           currency: 5,6
         result:
-          id: 359
+          item: shears
           amount: 1
           # in this case, we are randomly picking one random enchantment 
           # from the whole list
@@ -178,32 +174,21 @@ Tiers:
           - pick:
             # weights is a way to make certain choices more likely to be picked than others
             # make sure the number of weights is equal to the number of your enchants
-            - weights 10 2 1 1 1
+            - weights 10 2 1 1
             - enchant:
-                id: 32
-                level: 2
-                comment: efficiency 2
+                efficiency: 2
             - enchant:
-                id: 32
-                level: 5
-                comment: efficiency 5
+                efficiency: 5
             - enchant:
-                id: 34
-                level: 3
+                unbreaking: 3
                 # this value is added to itemA.amount (or currency) - you can basically 
                 # increase the price if certain high level enchantments are picked
                 # amount is capped at 64 and bonusAmountB works too
                 bonusAmountA: 32,35
-                comment: unbreaking 3
             # you can also provide a group of enchants. if this is picked,
             # every enchant node will be applied to the item
             - group:
               - enchant:
-                  id: 32
-                  level: 4
-                  comment: efficiency 4
+                  efficiency: 4
               - enchant:
-                  id: 33
-                  level: 1
-                  comment: silk touch 1
-              
+                  silk_touch: 1
