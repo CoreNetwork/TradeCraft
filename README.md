@@ -50,11 +50,9 @@ Pick is simple parent node and will pick one of the child nodes:
 ```
 - pick:
   - enchant:
-      id: 32
-      level: 1
+      efficiency: 1
   - enchant:
-      id: 32
-      level: 2
+      efficiency: 2
 ```
 
 ### Pick multiple items
@@ -64,21 +62,13 @@ You may also order it to pick multiple items. For example:
 ```    
 - pick 2:
   - enchant:
-      id: 7
-      level: 1
-      comment: thorns 1
+      thorns: 1
   - enchant:
-      id: 2
-      level: 4
-      comment: feather falling 4
+      feather_falling: 4
    - enchant:
-      id: 34
-      level: 3
-      comment: unbreaking 3
+      unbreaking: 3
   - enchant:
-      id: 0
-      level: 4
-      comment: protection 4
+      protection: 4
 ```
 
 Above example will pick 2 enchantments out of 4 provided.
@@ -90,21 +80,13 @@ In above examples, all items have same chance of being picked (their weight is 1
 - pick:
   - weights 10 5 3 1
   - enchant:
-      id: 7
-      level: 1
-      comment: thorns 1
+      thorns: 1
   - enchant:
-      id: 2
-      level: 4
-      comment: feather falling 4
+      feather_falling: 4
    - enchant:
-      id: 34
-      level: 3
-      comment: unbreaking 3
+      unbreaking: 3
   - enchant:
-      id: 0
-      level: 4
-      comment: protection 4
+      protection: 4
 ```
  
 In above example first enchant has weight 10, second 5, third 3 and fourth 1. That means first enchant is 10 times more likely to be picked as fourth and twice more likely to be picked than second.
@@ -114,22 +96,14 @@ In above example first enchant has weight 10, second 5, third 3 and fourth 1. Th
 ```    
 - pick:
   - enchant:
-      id: 7
-      level: 1
-      comment: thorns 1
+      thorns: 1
   - enchant:
-      id: 2
-      level: 4
-      comment: feather falling 4
+      feather_falling: 4
    - group:
      - enchant:
-        id: 34
-        level: 3
-        comment: unbreaking 3
+        unbreaking: 3
     - enchant:
-        id: 0
-        level: 4
-        comment: protection 4
+        protection: 4
 ```
 
 You can create groups, so you can pick one enchant or group of multiple enchants.
