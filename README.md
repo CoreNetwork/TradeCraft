@@ -13,10 +13,9 @@ If you don’t want to install from source, you can use our Jenkins site to [dow
 
 ## Installation
 
-1. Stop your server
-2. Drop TradeCraft.jar into the plugins directory
-3. Start the server
-4. Stop the server
+1. Drop TradeCraft.jar into the plugins directory
+2. Start the server
+3. Stop the server
 
 The plugin will create its `TradeCraft` directory and inside, `config.yml`, `example.yml` and `trades.sqlite`.
 
