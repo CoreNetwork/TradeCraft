@@ -43,14 +43,11 @@ Professions:
   - Weapon Smith
   - Tool Smith
   '4':
+# You can also make rare villagers by specifying weights like below
+# In this case for every 100 Butcher villagers, 1 will be Leatherworker
+  - weights 100 1
   - Butcher
   - Leatherworker
-  '5':
-# You can also make rare villagers by specifying weights like below
-# In this case for every 100 green villagers, 1 will be special (statistically speaking)
-  - weights 100 1
-  - Green Villager
-  - Shiny Villager
 # Professions from CustomProfessions will only spawn via command :
 # /tradecraft spawn <villagerType> <customProfession>
 CustomProfessions:
