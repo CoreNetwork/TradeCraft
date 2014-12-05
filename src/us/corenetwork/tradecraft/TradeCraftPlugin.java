@@ -2,14 +2,13 @@ package us.corenetwork.tradecraft;
 
 import java.util.HashMap;
 import java.util.Random;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import us.corenetwork.tradecraft.commands.BaseCommand;
 import us.corenetwork.tradecraft.commands.ReloadCommand;
 import us.corenetwork.tradecraft.commands.SaveCommand;
+import us.corenetwork.tradecraft.commands.SpawnCommand;
 
 public class TradeCraftPlugin extends JavaPlugin {
 	public static TradeCraftPlugin instance;
@@ -25,7 +24,8 @@ public class TradeCraftPlugin extends JavaPlugin {
 		
 		commands.put("reload", new ReloadCommand());
 		commands.put("save", new SaveCommand());
-
+		commands.put("spawn", new SpawnCommand());
+		
 		getServer().getPluginManager().registerEvents(new TradeCraftListener(), this);
 		
 		IO.SaveExample();
