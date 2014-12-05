@@ -51,6 +51,10 @@ Professions:
   - weights 100 1
   - Green Villager
   - Shiny Villager
+# Professions from CustomProfessions will only spawn via command :
+# /tradecraft spawn <villagerType> <customProfession>
+CustomProfessions:
+- UberFarmer
 Tiers:
 # Here you declare tiers with trades for every career type you defined above
 # This particular farmer has 4 tiers.
@@ -192,3 +196,18 @@ Tiers:
                   efficiency: 4
               - enchant:
                   silk_touch: 1
+UberFarmer:
+    '0':
+    - trade:
+        itemA:
+          item: wheat
+          amount: 64
+        result:
+          currency: 5
+    - trade:
+        comment: selling bread
+        itemA:
+          currency: 10
+        result:
+          item: bread
+          amount: 30
