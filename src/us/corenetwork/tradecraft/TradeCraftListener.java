@@ -1,6 +1,7 @@
 package us.corenetwork.tradecraft;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -10,12 +11,13 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.entity.EntityPortalExitEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 
 /**
  * Created by Matej on 24.2.2014.
  */
 public class TradeCraftListener implements Listener {
-
+	
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event)
     {
@@ -81,5 +83,11 @@ public class TradeCraftListener implements Listener {
             }
         }
     }
-    
+ 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onWorldSaveEvent(WorldSaveEvent event)
+    {
+    	if(event.getWorld().getName().equals("world"))
+    		Villagers.SaveVillagers();
+    }
 }
