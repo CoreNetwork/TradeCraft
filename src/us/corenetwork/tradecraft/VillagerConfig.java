@@ -143,7 +143,7 @@ public class VillagerConfig {
         else
         {
             Object idO = map.get("id");
-            if (idO == null || !(idO instanceof String))
+            if (idO == null || !(idO instanceof Integer))
             {
                 Logs.warning("Invalid trades config: Missing or invalid item ID!");
                 return null;
