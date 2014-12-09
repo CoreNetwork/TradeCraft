@@ -5,6 +5,7 @@ public enum Setting {
 
     CURRENCY("Currency", "emerald"),
     ALL_UNLOCKED_REFRESH_CHANCE("AllUnlockedRefreshChance", 0.2),
+	DEFAULT_PROFESSION_COLOR("DefaultProfessionColor", ""),
 
 	DEBUG("Debug", false),
 	

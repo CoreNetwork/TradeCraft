@@ -13,6 +13,7 @@ import net.minecraft.server.v1_8_R1.MobEffectList;
 import net.minecraft.server.v1_8_R1.Village;
 import net.minecraft.server.v1_8_R1.World;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 /**
  * Created by Matej on 23.2.2014.
@@ -141,7 +142,11 @@ public class CustomVillager extends EntityVillager {
     public String getCustomName()
     {
         if (overrideName)
-            return tradeCraftVillager.getCareer();
+        {
+            String color = VillagerConfig.getColor(tradeCraftVillager.getCareer());
+            color = color.equals("") ? Settings.getString(Setting.DEFAULT_PROFESSION_COLOR) : color;
+            return ChatColor.translateAlternateColorCodes('&', color + tradeCraftVillager.getCareer());
+        }
         else
             return super.getCustomName();
     }
@@ -152,9 +157,6 @@ public class CustomVillager extends EntityVillager {
     @Override
     public void a(MerchantRecipe vanillaRecipe)
     {
-    	//DEBUG variable, just to see better
-    	String suuid = uniqueID.toString();
-    	
         // Yes/No sound
     	this.makeSound("mob.villager.yes", this.bf(), this.bg());
 

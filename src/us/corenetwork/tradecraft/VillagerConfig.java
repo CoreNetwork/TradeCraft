@@ -317,4 +317,10 @@ public class VillagerConfig {
 
         return null;
     }
+
+
+    public static String getColor(String career)
+    {
+        return IO.config.getString("Tiers."+career+".color", "");
+    }
 }
