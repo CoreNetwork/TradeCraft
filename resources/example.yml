@@ -18,6 +18,10 @@ Currency: emerald
 #
 # Players will still need to close the trade window for the plugin to check if it should restock trades.
 AllUnlockedRefreshChance: 0.2
+
+#Color code for default color of profession name in Villager GUI
+#Can be left blank - just put   DefaultProfessionColor: ''   here.
+DefaultProfessionColor: '&1'
 Debug: false
 
 Messages:
@@ -58,7 +62,10 @@ Tiers:
 # Tiers can have one trade but in Minecraft 1.8 snapshots they have more than one
 # Completing any trade from the very last tier has 100% chance to unlock another tier.
 # Completely any trade from any tier but the last tier has 20% to unlock another tier.
+
+# Here you can also specify a color for profession name in Villager GUI for each profession
   Farmer:
+    color: '&c'
     '0':
     - trade:
         # comment is used just for navigation and finding trades in this document fast
