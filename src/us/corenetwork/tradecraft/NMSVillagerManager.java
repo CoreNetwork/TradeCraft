@@ -70,7 +70,7 @@ public class NMSVillagerManager {
 
         CustomVillager newVillager = new CustomVillager(world, profession);
         newVillager.setPosition(location.getX(), location.getY(), location.getZ());
-        newVillager.setAge(nmsVillager.getAge());
+        newVillager.setAgeRaw(nmsVillager.getAge());
 
         world.removeEntity(nmsVillager);
         world.addEntity(newVillager, CreatureSpawnEvent.SpawnReason.CUSTOM);
