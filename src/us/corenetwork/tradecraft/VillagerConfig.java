@@ -231,7 +231,8 @@ public class VillagerConfig {
     {
         if (node == null)
         {
-            Logs.warning("Invalid trades config: missing number! Defaulting to 1");
+            //No warning, default to 1 silently
+            //Logs.warning("Invalid trades config: missing number! Defaulting to 1");
             return 1;
         }
         if (node instanceof Integer)
