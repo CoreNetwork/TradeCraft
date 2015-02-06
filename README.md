@@ -3,8 +3,7 @@ TradeCraft
 
 Custom villager tiers, trades and rebalancing.
 
-[CraftBukkit plugin](http://bukkit.org/)  
-Supported version: 1.8
+Supported version: Spigot 1.8
 
 
 ## Download
@@ -23,7 +22,11 @@ The plugin will create its `TradeCraft` directory and inside, `config.yml`, `exa
 
     /tradecraft save
     
-Run through console to save the trade queue to the DB. It will be automatically executed on server stop but it’s advisable to run it as often as you save you world files.
+Run through console to save the trade queue to the DB. It will be automatically executed on world save as well.
+
+    /tradecraft spawn <id> <profession>
+
+Spawn a custom Villager which can act as a shop keeper. Parameters: `<id>` is villager type, `<profession>` is a special profession defined in config (`CustomProfessions`), outside of default ones. If you need this Villager to stop moving and be invulnerable you’ll have to use vanilla’s [`/entitydata`](http://minecraft.gamepedia.com/Commands#entitydata).
 
 ## Configuration
 
@@ -119,3 +122,9 @@ The plugin implements villager trading mechanics from Minecraft 1.8. You need to
    * Any trade can be completed 3-13 times. This means that any 2nd+ completion has 20% chance to restock the whole tree. If you trade something 8 times, the game will roll a dice 8 times.
    * This means that there is a chance for the same trade to be restocked when you close the GUI.
    * There is a super small chance to lock every trade and make a villager unusable.
+
+## Known issues
+
+Because the profession and its trades are pulled from the database when a villager is right clicked, some client-side mods might show different profession than the one accessed in the trade window.
+
+Plugin will not co-operate with any other plugin influencing villager trades.
