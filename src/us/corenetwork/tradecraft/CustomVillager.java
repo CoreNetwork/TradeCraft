@@ -35,6 +35,8 @@ public class CustomVillager extends EntityVillager {
 
     public CustomVillager(World world, int i) {
         super(world, i);
+
+        AILimiter.apply(this);
     }
 
     private void init()

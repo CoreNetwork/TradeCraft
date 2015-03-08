@@ -7,6 +7,9 @@ public enum Setting {
     ALL_UNLOCKED_REFRESH_CHANCE("AllUnlockedRefreshChance", 0.2),
 	DEFAULT_PROFESSION_COLOR("DefaultProfessionColor", ""),
 
+    AI_LIMITER_ENABLE("AILimiter.Enable", false),
+    AI_LIMITER_DISTANCE_TO_PLAYER("AILimiter.MaximumDistanceToPlayer", 32),
+
 	DEBUG("Debug", false),
 	
 	MESSAGE_NO_PERMISSION("Messages.NoPermission", "No permission!"),
