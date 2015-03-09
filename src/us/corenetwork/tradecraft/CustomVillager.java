@@ -31,6 +31,8 @@ public class CustomVillager extends EntityVillager {
     public CustomVillager(World world) {
         super(world);
         Logs.debug("Spawned! " + this.getUniqueID().toString() +"  "+ this.world.worldData.getName()+"  " + this.locX+"  " + this.locY+"  " + this.locZ);
+
+        AILimiter.apply(this);
     }
 
     public CustomVillager(World world, int i) {
