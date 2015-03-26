@@ -7,7 +7,9 @@ import net.minecraft.server.v1_8_R1.PathfinderGoal;
 import net.minecraft.server.v1_8_R1.PathfinderGoalAvoidTarget;
 import net.minecraft.server.v1_8_R1.PathfinderGoalMoveIndoors;
 import net.minecraft.server.v1_8_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_8_R1.PathfinderGoalOpenDoor;
 import net.minecraft.server.v1_8_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_8_R1.PathfinderGoalRestrictOpenDoor;
 import net.minecraft.server.v1_8_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_8_R1.PathfinderGoalTakeFlower;
 
@@ -33,7 +35,13 @@ public class AILimiter
             PathfinderGoal originalGoal = (PathfinderGoal) ReflectionUtils.get(pathfinderGoalSelectorItemClass, pathfinderGoalSelectorItem, "a");
 
             //Included goals
-            if (!(originalGoal instanceof PathfinderGoalAvoidTarget || originalGoal instanceof PathfinderGoalMoveIndoors || originalGoal instanceof PathfinderGoalMoveTowardsRestriction || originalGoal instanceof PathfinderGoalTakeFlower || originalGoal instanceof PathfinderGoalRandomStroll))
+            if (!(     originalGoal instanceof PathfinderGoalAvoidTarget
+                    || originalGoal instanceof PathfinderGoalMoveIndoors
+                    || originalGoal instanceof PathfinderGoalMoveTowardsRestriction
+                    || originalGoal instanceof PathfinderGoalTakeFlower
+                    || originalGoal instanceof PathfinderGoalRandomStroll
+                    || originalGoal instanceof PathfinderGoalOpenDoor
+                    || originalGoal instanceof PathfinderGoalRestrictOpenDoor))
                 continue;
 
             ReflectionUtils.set(pathfinderGoalSelectorItemClass, pathfinderGoalSelectorItem, "a", new NearbyPlayerPathfinderGoalProxy(originalGoal, entityInsentient));
