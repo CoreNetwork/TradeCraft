@@ -1,8 +1,6 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_8_R1.Item;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
+import net.minecraft.server.v1_8_R2.Item;
 
 /**
  * Created by Matej on 2.12.2014.
@@ -11,7 +9,7 @@ public class MinecraftNames
 {
     public static Integer getEnchantmentId(String name)
     {
-        net.minecraft.server.v1_8_R1.Enchantment nmsEnchantment = net.minecraft.server.v1_8_R1.Enchantment.getByName(name);
+        net.minecraft.server.v1_8_R2.Enchantment nmsEnchantment = net.minecraft.server.v1_8_R2.Enchantment.getByName(name);
         if (nmsEnchantment == null)
             return null;
 

@@ -1,17 +1,18 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_8_R1.Block;
-import net.minecraft.server.v1_8_R1.EntityAgeable;
-import net.minecraft.server.v1_8_R1.EntityHuman;
-import net.minecraft.server.v1_8_R1.EntityPlayer;
-import net.minecraft.server.v1_8_R1.EntityVillager;
-import net.minecraft.server.v1_8_R1.ItemStack;
-import net.minecraft.server.v1_8_R1.MerchantRecipe;
-import net.minecraft.server.v1_8_R1.MerchantRecipeList;
-import net.minecraft.server.v1_8_R1.MobEffect;
-import net.minecraft.server.v1_8_R1.MobEffectList;
-import net.minecraft.server.v1_8_R1.Village;
-import net.minecraft.server.v1_8_R1.World;
+import net.minecraft.server.v1_8_R2.Block;
+import net.minecraft.server.v1_8_R2.EntityAgeable;
+import net.minecraft.server.v1_8_R2.EntityHuman;
+import net.minecraft.server.v1_8_R2.EntityPlayer;
+import net.minecraft.server.v1_8_R2.EntityVillager;
+import net.minecraft.server.v1_8_R2.ItemStack;
+import net.minecraft.server.v1_8_R2.MerchantRecipe;
+import net.minecraft.server.v1_8_R2.MerchantRecipeList;
+import net.minecraft.server.v1_8_R2.MinecraftKey;
+import net.minecraft.server.v1_8_R2.MobEffect;
+import net.minecraft.server.v1_8_R2.MobEffectList;
+import net.minecraft.server.v1_8_R2.Village;
+import net.minecraft.server.v1_8_R2.World;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -70,7 +71,7 @@ public class CustomVillager extends EntityVillager {
         {
             Logs.severe("Villager " + uniqueID.toString() + " has no trades!");
 
-            CustomRecipe recipe = new CustomRecipe(new ItemStack((Block) Block.REGISTRY.get("bedrock"), 65), new ItemStack((Block) Block.REGISTRY.get("bedrock"), 1));
+            CustomRecipe recipe = new CustomRecipe(new ItemStack((Block) Block.REGISTRY.get(new MinecraftKey("bedrock")), 65), new ItemStack((Block) Block.REGISTRY.get(new MinecraftKey("bedrock")), 1));
             //recipe.lockManually();
 
             MerchantRecipeList list = new MerchantRecipeList();
@@ -162,10 +163,10 @@ public class CustomVillager extends EntityVillager {
     public void a(MerchantRecipe vanillaRecipe)
     {
         // Yes/No sound
-    	this.makeSound("mob.villager.yes", this.bf(), this.bg());
+    	this.makeSound("mob.villager.yes", this.bB(), this.bC());
 
         //Refrehs inventory
-        EntityHuman human = u_();
+        EntityHuman human = v_();
         if (human != null && human instanceof EntityPlayer)
         {
             final org.bukkit.entity.Player player = ((EntityPlayer) human).getBukkitEntity();
