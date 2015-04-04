@@ -23,7 +23,7 @@ public class AILimiter
         Class pathfinderGoalSelectorItemClass = null;
         try
         {
-            pathfinderGoalSelectorItemClass = Class.forName("net.minecraft.server.v1_8_R2.PathfinderGoalSelectorItem");
+            pathfinderGoalSelectorItemClass = Class.forName("net.minecraft.server.v1_8_R2.PathfinderGoalSelector$PathfinderGoalSelectorItem");
         } catch (ClassNotFoundException e)
         {
             e.printStackTrace();
