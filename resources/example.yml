@@ -19,6 +19,10 @@ Currency: emerald
 # Players will still need to close the trade window for the plugin to check if it should restock trades.
 AllUnlockedRefreshChance: 0.2
 
+# If set to true, the villager types not found in `Professions` list will keep vanilla trades and general behaviour
+# Otherwise, they will be replaced by NO_CAREER villager with impossible trade
+KeepVanillaTradesIfNoneSpecified: false
+
 #Color code for default color of profession name in Villager GUI
 #Can be left blank - just put   DefaultProfessionColor: ''   here.
 DefaultProfessionColor: '&1'

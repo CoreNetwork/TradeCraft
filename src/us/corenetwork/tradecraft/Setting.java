@@ -9,7 +9,7 @@ public enum Setting {
 
     AI_LIMITER_ENABLE("AILimiter.Enable", false),
     AI_LIMITER_DISTANCE_TO_PLAYER("AILimiter.MaximumDistanceToPlayer", 32),
-
+	KEEP_VANILLA_IF_NO_TRADES_SPECIFIED("KeepVanillaTradesIfNoneSpecified", false),
 	DEBUG("Debug", false),
 	
 	MESSAGE_NO_PERMISSION("Messages.NoPermission", "No permission!"),

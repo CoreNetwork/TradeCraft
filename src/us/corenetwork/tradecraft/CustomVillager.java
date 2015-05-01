@@ -20,6 +20,9 @@ import org.bukkit.ChatColor;
  * Created by Matej on 23.2.2014.
  */
 public class CustomVillager extends EntityVillager {
+
+    private final static String NO_CAREER = "NO_CAREER";
+
     private TradeCraftVillager tradeCraftVillager;
     private String lastTradingPlayer = null;
 
@@ -45,7 +48,7 @@ public class CustomVillager extends EntityVillager {
     private void init()
     {
         loadVillagerData();
-        if (tradeCraftVillager.getTrades().size() == 0)
+        if (tradeCraftVillager != null && tradeCraftVillager.getTrades().size() == 0)
         {
         	tradeCraftVillager.addTier(0);
         }
@@ -64,7 +67,7 @@ public class CustomVillager extends EntityVillager {
     public MerchantRecipeList getOffers(EntityHuman entityHuman) {
     	
     	if(tradeCraftVillager == null)
-    		init();
+    		return super.getOffers(entityHuman);
     	
     	MerchantRecipeList trades = tradeCraftVillager.getTrades();
         if (trades == null || trades.size() == 0)
@@ -89,38 +92,40 @@ public class CustomVillager extends EntityVillager {
     @Override
     public void a_(EntityHuman entityHuman)
     {
-        if (entityHuman == null) //Nobody is trading now
+        if(tradeCraftVillager != null)
         {
-            if (createNewTier)
+            if (entityHuman == null) //Nobody is trading now
             {
-            	tradeCraftVillager.addTier(tradeCraftVillager.getLastTier() + 1);
-            	tradeCraftVillager.refreshAllTrades();
+                if (createNewTier)
+                {
+                    tradeCraftVillager.addTier(tradeCraftVillager.getLastTier() + 1);
+                    tradeCraftVillager.refreshAllTrades();
 
-                //Particle effects and increasing village population
-                Village village = (Village) ReflectionUtils.get(EntityVillager.class, this, "village");
+                    //Particle effects and increasing village population
+                    Village village = (Village) ReflectionUtils.get(EntityVillager.class, this, "village");
 
-                if (village != null && lastTradingPlayer != null) {
-                    Logs.debugIngame("Reputation UP!");
-                    this.world.broadcastEntityEffect(this, (byte) 14);
-                    village.a(lastTradingPlayer, 1);
+                    if (village != null && lastTradingPlayer != null)
+                    {
+                        Logs.debugIngame("Reputation UP!");
+                        this.world.broadcastEntityEffect(this, (byte) 14);
+                        village.a(lastTradingPlayer, 1);
+                    }
+
+                    //Particle effect when new tier is created
+                    this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
+                } else if (restockAll)
+                {
+                    tradeCraftVillager.refreshAllTrades();
+
+                    //Particle effect when restocking
+                    this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
                 }
 
-                //Particle effect when new tier is created
-                this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
-            }
-            else if (restockAll)
-            {
-            	tradeCraftVillager.refreshAllTrades();
-
-                //Particle effect when restocking
-                this.addEffect(new MobEffect(MobEffectList.REGENERATION.id, 200, 0));
-            }
-
-            restockAll = false;
-            createNewTier = false;
+                restockAll = false;
+                createNewTier = false;
+            } else
+                Logs.debugIngame("Trading with: " + tradeCraftVillager.getCareer() + " " + this.getUniqueID().toString());
         }
-        else
-            Logs.debugIngame("Trading with: " + tradeCraftVillager.getCareer() + " " + this.getUniqueID().toString());
 
         super.a_(entityHuman);
     }
@@ -135,7 +140,7 @@ public class CustomVillager extends EntityVillager {
     {
     	if(tradeCraftVillager == null)
     		init();
-    	
+
         overrideName = true;
         boolean returningBool = super.a(entityHuman);
         overrideName = false;
@@ -146,7 +151,7 @@ public class CustomVillager extends EntityVillager {
     @Override
     public String getCustomName()
     {
-        if (overrideName)
+        if (overrideName && tradeCraftVillager != null)
         {
             String color = VillagerConfig.getColor(tradeCraftVillager.getCareer());
             color = color.equals("") ? Settings.getString(Setting.DEFAULT_PROFESSION_COLOR) : color;
@@ -162,6 +167,11 @@ public class CustomVillager extends EntityVillager {
     @Override
     public void a(MerchantRecipe vanillaRecipe)
     {
+        if(tradeCraftVillager == null)
+        {
+            super.a(vanillaRecipe);
+            return;
+        }
         // Yes/No sound
     	this.makeSound("mob.villager.yes", this.bB(), this.bC());
 
@@ -221,7 +231,7 @@ public class CustomVillager extends EntityVillager {
         {
         	if (tradeCraftVillager != null)
         	{
-        		if(tradeCraftVillager.isPortaling() == false)
+        		if(!tradeCraftVillager.isPortaling())
         		{
         			tradeCraftVillager.setDead(true);
         		}
@@ -234,13 +244,18 @@ public class CustomVillager extends EntityVillager {
     }
     public void loadVillagerData()
     {
-    	if (Villagers.exists(uniqueID.toString()) == false)
+    	if (!Villagers.exists(uniqueID.toString()))
     	{
     		String newCareer = VillagerConfig.getRandomCareer(getProfession());
             if (newCareer == null)
-            	newCareer = "NO_CAREER";
-    		Villagers.create(uniqueID.toString(), newCareer);
-    		Logs.debug(this.world.getWorldData().getName() + " " + this.locX + " " + this.locY + " " + this.locZ);
+            {
+                newCareer = NO_CAREER;
+            }
+            if(!newCareer.equals(NO_CAREER) || !Settings.getBoolean(Setting.KEEP_VANILLA_IF_NO_TRADES_SPECIFIED))
+            {
+                Villagers.create(uniqueID.toString(), newCareer);
+                Logs.debug(this.world.getWorldData().getName() + " " + this.locX + " " + this.locY + " " + this.locZ);
+            }
     	}
     	tradeCraftVillager = Villagers.getVillager(uniqueID.toString());
     }

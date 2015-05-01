@@ -253,7 +253,8 @@ public class VillagerConfig {
         List<String> careers = IO.config.getStringList("Professions." + villagerType);
         if (careers.size() == 0)
         {
-            Logs.severe("No professions found for villager number " + villagerType + ".");
+            if(!Settings.getBoolean(Setting.KEEP_VANILLA_IF_NO_TRADES_SPECIFIED))
+                Logs.severe("No professions found for villager number " + villagerType + ".");
             return null;
         }
 
