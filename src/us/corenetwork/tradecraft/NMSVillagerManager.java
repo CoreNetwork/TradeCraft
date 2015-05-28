@@ -2,14 +2,15 @@ package us.corenetwork.tradecraft;
 
 import java.util.List;
 import java.util.Map;
-import net.minecraft.server.v1_8_R2.BiomeBase;
-import net.minecraft.server.v1_8_R2.EntityTypes;
-import net.minecraft.server.v1_8_R2.EntityVillager;
-import net.minecraft.server.v1_8_R2.NBTReadLimiter;
-import net.minecraft.server.v1_8_R2.World;
+
+import net.minecraft.server.v1_8_R3.BiomeBase;
+import net.minecraft.server.v1_8_R3.EntityTypes;
+import net.minecraft.server.v1_8_R3.EntityVillager;
+import net.minecraft.server.v1_8_R3.NBTReadLimiter;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftVillager;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftVillager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;

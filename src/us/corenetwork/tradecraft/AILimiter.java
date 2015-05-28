@@ -1,17 +1,18 @@
 package us.corenetwork.tradecraft;
 
+import net.minecraft.server.v1_8_R3.EntityInsentient;
+import net.minecraft.server.v1_8_R3.PathfinderGoal;
+import net.minecraft.server.v1_8_R3.PathfinderGoalAvoidTarget;
+import net.minecraft.server.v1_8_R3.PathfinderGoalMoveIndoors;
+import net.minecraft.server.v1_8_R3.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_8_R3.PathfinderGoalOpenDoor;
+import net.minecraft.server.v1_8_R3.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_8_R3.PathfinderGoalRestrictOpenDoor;
+import net.minecraft.server.v1_8_R3.PathfinderGoalSelector;
+import net.minecraft.server.v1_8_R3.PathfinderGoalTakeFlower;
+
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.server.v1_8_R2.EntityInsentient;
-import net.minecraft.server.v1_8_R2.PathfinderGoal;
-import net.minecraft.server.v1_8_R2.PathfinderGoalAvoidTarget;
-import net.minecraft.server.v1_8_R2.PathfinderGoalMoveIndoors;
-import net.minecraft.server.v1_8_R2.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_8_R2.PathfinderGoalOpenDoor;
-import net.minecraft.server.v1_8_R2.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_8_R2.PathfinderGoalRestrictOpenDoor;
-import net.minecraft.server.v1_8_R2.PathfinderGoalSelector;
-import net.minecraft.server.v1_8_R2.PathfinderGoalTakeFlower;
 
 public class AILimiter
 {
@@ -23,7 +24,7 @@ public class AILimiter
         Class pathfinderGoalSelectorItemClass = null;
         try
         {
-            pathfinderGoalSelectorItemClass = Class.forName("net.minecraft.server.v1_8_R2.PathfinderGoalSelector$PathfinderGoalSelectorItem");
+            pathfinderGoalSelectorItemClass = Class.forName("net.minecraft.server.v1_8_R3.PathfinderGoalSelector$PathfinderGoalSelectorItem");
         } catch (ClassNotFoundException e)
         {
             e.printStackTrace();

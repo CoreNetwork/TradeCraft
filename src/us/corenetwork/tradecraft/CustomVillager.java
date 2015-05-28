@@ -1,18 +1,18 @@
 package us.corenetwork.tradecraft;
 
-import net.minecraft.server.v1_8_R2.Block;
-import net.minecraft.server.v1_8_R2.EntityAgeable;
-import net.minecraft.server.v1_8_R2.EntityHuman;
-import net.minecraft.server.v1_8_R2.EntityPlayer;
-import net.minecraft.server.v1_8_R2.EntityVillager;
-import net.minecraft.server.v1_8_R2.ItemStack;
-import net.minecraft.server.v1_8_R2.MerchantRecipe;
-import net.minecraft.server.v1_8_R2.MerchantRecipeList;
-import net.minecraft.server.v1_8_R2.MinecraftKey;
-import net.minecraft.server.v1_8_R2.MobEffect;
-import net.minecraft.server.v1_8_R2.MobEffectList;
-import net.minecraft.server.v1_8_R2.Village;
-import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R3.Block;
+import net.minecraft.server.v1_8_R3.EntityAgeable;
+import net.minecraft.server.v1_8_R3.EntityHuman;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.EntityVillager;
+import net.minecraft.server.v1_8_R3.ItemStack;
+import net.minecraft.server.v1_8_R3.MerchantRecipe;
+import net.minecraft.server.v1_8_R3.MerchantRecipeList;
+import net.minecraft.server.v1_8_R3.MinecraftKey;
+import net.minecraft.server.v1_8_R3.MobEffect;
+import net.minecraft.server.v1_8_R3.MobEffectList;
+import net.minecraft.server.v1_8_R3.Village;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
