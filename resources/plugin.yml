@@ -1,6 +1,6 @@
 name: TradeCraft
 main: us.corenetwork.tradecraft.TradeCraftPlugin
-version: 1.1.4
+version: 1.2.0
 author: matejdro
 commands:
     tradecraft:
