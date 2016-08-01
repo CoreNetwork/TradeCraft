@@ -5,6 +5,15 @@ Custom villager tiers, trades and rebalancing.
 
 Supported version: Spigot 1.8
 
+**Please note!**
+
+This is the original repository of TradeCraft but it is not updated by us any more. 
+
+It will still work with Spigot 1.8, but no other version
+
+https://github.com/Kongolan/TradeCraft is a fork that supports the more recent versions of Spigot.
+
+See also: [TradeCraft#52](https://github.com/CoreNetwork/TradeCraft/issues/52)
 
 ## Download
 
